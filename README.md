@@ -1,6 +1,6 @@
 # TAP Standings
 
-> **Live multi-sport standings dashboard for University of North Dakota athletics.**
+> **Live multi-sport standings dashboard for University of St. Thomas athletics.**
 > Automatically scraped and deployed every morning at 9:00 AM CT via GitHub Actions.
 
 🔗 **[View Live Site](https://kcakins1120.github.io/TAP_Standings/)**
@@ -10,7 +10,7 @@
 
 ## 📋 Overview
 
-TAP Standings is a fully automated, serverless standings dashboard that pulls live conference standings from multiple athletic associations relevant to UND and displays them on a clean, dark-themed web page — no backend, no database, no manual updates required.
+TAP Standings is a fully automated, serverless standings dashboard that pulls live conference standings from multiple athletic associations relevant to UST and displays them on a clean, dark-themed web page — no backend, no database, no manual updates required.
 
 Standings are scraped using a headless Chromium browser (Playwright), structured into a single `data.json` file, and served as a static GitHub Pages site. The entire pipeline runs on a daily cron schedule inside GitHub Actions.
 
