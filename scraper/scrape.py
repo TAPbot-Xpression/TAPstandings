@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Fetch standings from multiple Summit League, PFL, and NCHC sports pages.
+Fetch standings from multiple Summit League, PFL, NCHC, and WCHA sports pages.
 Extracts:
   - Team Name & Team Acronym
   - Conference record (W-L)
   - Overall record (W-L)
   - CPTS for MSOC & WSOC (Summit League Soccer points)
-  - PTS for NCHC Men's Ice Hockey points
+  - PTS for NCHC Men's Ice Hockey and WCHA Women's Ice Hockey points
   - Skips Pods table for WSOC and pulls the full 8-team table
 
 Writes structured output to docs/data.json.
@@ -73,16 +73,23 @@ TEAM_ACRONYMS = {
     "Minnesota Duluth":         "UMD",
     "St. Cloud State":          "SCSU",
     "Western Michigan":         "WMU",
+
+    # ── WCHA Women's Ice Hockey ───────────────────────────────────────────────
+    "Ohio State":               "OSU",
+    "Minnesota":                "MINN",
+    "Wisconsin":                "WIS",
+    "Bemidji State":            "BSU",
+    "Minnesota State":          "MSU",
 }
 
 # ── Target Sports Configuration ────────────────────────────────────────────────
 SPORTS_CONFIG = [
     {
-        "id": "wvball",
-        "name": "Summit League Women's Volleyball",
-        "url": "https://thesummitleague.org/standings.aspx?path=wvball",
-        "point_col": None,
-        "skip_pods": False,
+        "id": "wsoc",
+        "name": "Summit League Women's Soccer",
+        "url": "https://thesummitleague.org/standings.aspx?path=wsoc",
+        "point_col": "cpts",
+        "skip_pods": True,
     },
     {
         "id": "msoc",
@@ -92,17 +99,31 @@ SPORTS_CONFIG = [
         "skip_pods": False,
     },
     {
-        "id": "wsoc",
-        "name": "Summit League Women's Soccer",
-        "url": "https://thesummitleague.org/standings.aspx?path=wsoc",
-        "point_col": "cpts",
-        "skip_pods": True,
-    },
-    {
         "id": "pfl",
         "name": "Pioneer Football League",
         "url": "https://pioneer-football.org/standings.aspx?standings=19",
         "point_col": None,
+        "skip_pods": False,
+    },
+    {
+        "id": "wvball",
+        "name": "Summit League Women's Volleyball",
+        "url": "https://thesummitleague.org/standings.aspx?path=wvball",
+        "point_col": None,
+        "skip_pods": False,
+    },
+    {
+        "id": "whockey",
+        "name": "WCHA Women's Ice Hockey",
+        "url": "https://wcha.com/standings.aspx?path=whockey",
+        "point_col": "pts",
+        "skip_pods": False,
+    },
+    {
+        "id": "mhockey",
+        "name": "NCHC Men's Ice Hockey",
+        "url": "https://nchchockey.com/standings.aspx?path=mhockey",
+        "point_col": "pts",
         "skip_pods": False,
     },
     {
@@ -120,23 +141,16 @@ SPORTS_CONFIG = [
         "skip_pods": False,
     },
     {
-        "id": "mhockey",
-        "name": "NCHC Men's Ice Hockey",
-        "url": "https://nchchockey.com/standings.aspx?path=mhockey",
-        "point_col": "pts",
+        "id": "summit_193",
+        "name": "Summit League Softball",
+        "url": "https://thesummitleague.org/standings.aspx?standings=193",
+        "point_col": None,
         "skip_pods": False,
     },
     {
         "id": "summit_195",
         "name": "Summit League Baseball",
         "url": "https://thesummitleague.org/standings.aspx?standings=195",
-        "point_col": None,
-        "skip_pods": False,
-    },
-    {
-        "id": "summit_193",
-        "name": "Summit League Softball",
-        "url": "https://thesummitleague.org/standings.aspx?standings=193",
         "point_col": None,
         "skip_pods": False,
     },
@@ -246,12 +260,12 @@ def parse_standings_table(html, sport_meta):
 
     team_idx = idx("team", "school", "member", "institution", "name")
 
-    # Conference record
-    conf_combined = exact_idx("conf", "conference", "league")
+    # Conference record (WCHA / NCHC / Summit / PFL)
+    conf_combined = exact_idx("conf", "conference", "league", "wcha", "nchc")
     if conf_combined is None:
-        conf_combined = idx("conf record", "conference record")
-    conf_w_idx = idx("conf w", "cw", "conference w") if conf_combined is None else None
-    conf_l_idx = idx("conf l", "cl", "conference l") if conf_combined is None else None
+        conf_combined = idx("conf record", "conference record", "wcha record", "nchc record")
+    conf_w_idx = idx("conf w", "cw", "conference w", "wcha w") if conf_combined is None else None
+    conf_l_idx = idx("conf l", "cl", "conference l", "wcha l") if conf_combined is None else None
 
     # Overall record
     ovr_combined = exact_idx("overall", "ovr", "total")
@@ -265,7 +279,7 @@ def parse_standings_table(html, sport_meta):
     if point_col_type == "cpts":
         pts_idx = exact_idx("cpts", "conf pts", "pts", "points") or idx("cpts", "conf pts")
     elif point_col_type == "pts":
-        pts_idx = exact_idx("pts", "points", "total pts", "tp") or idx("pts", "point")
+        pts_idx = exact_idx("pts", "points", "total pts", "tp", "wcha pts", "nchc pts") or idx("pts", "point")
 
     # Parse rows
     rows = []
