@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>St. Thomas Athletics | Conference Standings</title>
+  <title>TAPbot - Tommie Athletics Standings</title>
   <style>
     :root {
       --bg: #0c0d10;
@@ -13,10 +13,8 @@
       --text: #e2e8f0;
       --text-muted: #94a3b8;
       --ust-purple: #510C76;
-      --ust-purple-light: #7c2d12;
       --ust-purple-accent: #8b2fc9;
       --ust-highlight: rgba(139, 47, 201, 0.18);
-      --ust-border: #8b2fc9;
       --badge-ok-bg: #14532d;
       --badge-ok-txt: #4ade80;
       --badge-stale-bg: #713f12;
@@ -36,7 +34,7 @@
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding: 2rem 1rem 4rem;
+      padding: 2.5rem 1rem 4rem;
     }
 
     .container {
@@ -47,39 +45,46 @@
     /* Header */
     header {
       text-align: center;
-      margin-bottom: 2.5rem;
-    }
-
-    .brand-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: var(--ust-purple);
-      color: #fff;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      padding: 0.35rem 0.85rem;
-      border-radius: 999px;
-      margin-bottom: 0.8rem;
-      box-shadow: 0 0 16px rgba(81, 12, 118, 0.5);
+      margin-bottom: 2rem;
     }
 
     header h1 {
-      font-size: 2rem;
+      font-size: 2.1rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: #fff;
     }
 
-    header p.subtitle {
-      margin-top: 0.4rem;
-      font-size: 0.9rem;
-      color: var(--text-muted);
+    .header-links {
+      margin-top: 0.6rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
     }
 
-    /* Meta Bar / Filters */
+    .json-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #c084fc;
+      background: rgba(139, 47, 201, 0.15);
+      border: 1px solid rgba(139, 47, 201, 0.35);
+      padding: 0.3rem 0.8rem;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .json-link:hover {
+      background: rgba(139, 47, 201, 0.28);
+      color: #e9d5ff;
+      border-color: var(--ust-purple-accent);
+    }
+
+    /* Controls Bar & Filters */
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -336,17 +341,20 @@
 
   <div class="container">
     <header>
-      <div class="brand-badge">🐾 University of St. Thomas Athletics</div>
-      <h1>Tommie Conference Standings</h1>
-      <p class="subtitle">Automated TAPbot data feed for Xpression • Summit League, PFL & NCHC</p>
+      <h1>TAPbot - Tommie Athletics Standings</h1>
+      <div class="header-links">
+        <a href="data.json" target="_blank" rel="noopener" class="json-link">
+          📄 View Raw JSON (data.json)
+        </a>
+      </div>
     </header>
 
     <div class="controls">
       <div class="filter-group" id="filter-buttons">
-        <button class="filter-btn active" data-filter="all">All Sports</button>
-        <button class="filter-btn" data-filter="summit">Summit League</button>
-        <button class="filter-btn" data-filter="pfl">PFL Football</button>
-        <button class="filter-btn" data-filter="nchc">NCHC Hockey</button>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="fall">Fall Sports</button>
+        <button class="filter-btn" data-filter="winter">Winter Sports</button>
+        <button class="filter-btn" data-filter="spring">Spring Sports</button>
       </div>
       <div class="last-generated" id="last-generated-time">Loading feed…</div>
     </div>
@@ -364,6 +372,23 @@
   <script>
     let sportsData = {};
     let activeFilter = "all";
+
+    // Season category mapping
+    const SEASON_MAP = {
+      // Fall
+      wsoc: "fall",
+      msoc: "fall",
+      wvball: "fall",
+      pfl: "fall",
+      // Winter
+      whockey: "winter",
+      mhockey: "winter",
+      wbball: "winter",
+      mbball: "winter",
+      // Spring
+      summit_193: "spring",
+      summit_195: "spring"
+    };
 
     async function loadData() {
       const grid = document.getElementById("sports-grid");
@@ -392,7 +417,7 @@
             <div class="message">
               <span class="message-icon">⚠️</span>
               Could not load standings feed: ${err.message}<br/>
-              <small style="color:#64748b; margin-top:0.5rem; display:block;">Ensure data.json is in the same directory.</small>
+              <small style="color:#64748b; margin-top:0.5rem; display:block;">Ensure data.json is in the docs/ directory.</small>
             </div>
           </div>
         `;
@@ -400,10 +425,8 @@
       }
     }
 
-    function getLeagueCategory(sportId, sportName) {
-      if (sportId === "pfl") return "pfl";
-      if (sportId === "mhockey") return "nchc";
-      return "summit";
+    function getSeasonCategory(sportId) {
+      return SEASON_MAP[sportId] || "other";
     }
 
     function renderGrid() {
@@ -419,16 +442,15 @@
         return;
       }
 
-      const filtered = entries.filter(([id, s]) => {
+      const filtered = entries.filter(([id]) => {
         if (activeFilter === "all") return true;
-        const category = getLeagueCategory(id, s.name);
-        return category === activeFilter;
+        return getSeasonCategory(id) === activeFilter;
       });
 
       if (filtered.length === 0) {
         grid.innerHTML = `
           <div class="card" style="grid-column: 1 / -1;">
-            <div class="message">No sports found for this category filter.</div>
+            <div class="message">No sports found for this season filter.</div>
           </div>
         `;
         return;
@@ -452,7 +474,7 @@
         badgeText = "⚠ Stale";
       }
 
-      // Check if sport has a points column (CPTS or PTS)
+      // Check if sport has a points column (CPTS for soccer, PTS for hockey)
       const hasCpts = s.rows && s.rows.some(r => r.cpts !== undefined);
       const hasPts  = s.rows && s.rows.some(r => r.pts !== undefined);
       const ptsHeader = hasCpts ? "CPTS" : (hasPts ? "PTS" : null);
@@ -530,6 +552,7 @@
     function getLeagueLabel(id) {
       if (id === "pfl") return "Pioneer Football League";
       if (id === "mhockey") return "NCHC Men's Ice Hockey";
+      if (id === "whockey") return "WCHA Women's Ice Hockey";
       return "Summit League";
     }
 
@@ -541,7 +564,7 @@
         .replace(/"/g, "&quot;");
     }
 
-    // Set up filter buttons
+    // Filter button handlers
     document.querySelectorAll(".filter-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
