@@ -380,6 +380,35 @@
     .card-footer a:hover {
       text-decoration: underline;
     }
+    /* Date badge next to title */
+    .poll-date-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: rgba(148, 163, 184, 0.12);
+      border: 1px solid var(--border);
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      margin-left: 0.5rem;
+      vertical-align: middle;
+      text-transform: none;
+    }
+
+    /* Receiving votes small text below the table */
+    .receiving-votes {
+      font-size: 0.75rem;
+      line-height: 1.4;
+      color: var(--text-muted);
+      padding: 0.65rem 1.2rem;
+      background: #11141b;
+      border-top: 1px solid var(--border);
+    }
+
+    .receiving-votes .rv-label {
+      font-weight: 700;
+      color: #cbd5e1;
+    }
 
     /* States & Messages */
     .message {
@@ -627,6 +656,80 @@
           </div>
         `;
       } else {
+        // Table layout for Conference Standings (Rank, Team + Acronym, Conf, Overall, CPTS/PTS)
+        const hasCpts = s.rows && s.rows.some(r => r.cpts !== undefined);
+        const hasPts  = s.rows && s.rows.some(r => r.pts !== undefined);
+        const ptsHeader = hasCpts ? "CPTS" : (hasPts ? "PTS" : null);
+
+        bodyContent = `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">#</th>
+                  <th>Team</th>
+                  <th class="num">Conf</th>
+                  <th class="num">Overall</th>
+                  ${ptsHeader ? `<th class="num pts-col">${ptsHeader}</th>` : ""}
+                </tr>
+              </thead>
+              <tbody>
+                ${s.rows.map(r => {
+                  const isUST = r.acronym === "UST" || (r.team && r.team.toLowerCase().includes("st. thomas"));
+                  const ptsVal = hasCpts ? (r.cpts ?? "—") : (hasPts ? (r.pts ?? "—") : null);
+
+                  return `
+                    <tr class="${isUST ? 'highlight-ust' : ''}">
+                      <td class="rank">${r.rank}</td>
+                      <td>
+                        <div class="team-cell">
+                          <span class="team-acronym">${escHtml(r.acronym || '—')}</span>
+                          <span class="team-name">${escHtml(r.team)}</span>
+                        </div>
+                      </td>
+                      <td class="record">${escHtml(r.conf)}</td>
+                      <td class="record">${escHtml(r.ovr)}</td>
+                      ${ptsHeader ? `<td class="pts-col">${escHtml(ptsVal)}</td>` : ""}
+                    </tr>
+                  `;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      // --- ADDED: Poll Date in Header & Receiving Votes Footer ---
+      const dateBadge = s.poll_date ? `<span class="poll-date-badge">${escHtml(s.poll_date)}</span>` : "";
+      
+      const receivingVotesHtml = (isPoll && s.receiving_votes) ? `
+        <div class="receiving-votes">
+          <span class="rv-label">Others receiving votes:</span> ${escHtml(s.receiving_votes)}
+        </div>
+      ` : "";
+
+      const sourceLinkText = isPoll ? "Official USCHO Poll ↗" : "Official Standings ↗";
+      const sourceLink = s.source ? `<a href="${escHtml(s.source)}" target="_blank" rel="noopener">${sourceLinkText}</a>` : `<span></span>`;
+      const updatedTime = s.updated_at ? new Date(s.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
+      return `
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-league">${escHtml(getLeagueLabel(id))}</div>
+              <h2 class="card-title">${escHtml(s.name || id)}${dateBadge}</h2>
+            </div>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          ${bodyContent}
+          ${receivingVotesHtml}
+          <div class="card-footer">
+            ${sourceLink}
+            <span>${updatedTime ? 'Scanned ' + updatedTime : ''}</span>
+          </div>
+        </div>
+      `;
+    } else {
         // Table layout for Conference Standings (Rank, Team + Acronym, Conf, Overall, CPTS/PTS)
         const hasCpts = s.rows && s.rows.some(r => r.cpts !== undefined);
         const hasPts  = s.rows && s.rows.some(r => r.pts !== undefined);
