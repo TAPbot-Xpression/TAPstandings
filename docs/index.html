@@ -257,7 +257,48 @@
       color: #e9d5ff;
       font-weight: 700;
     }
+/* Poll Trend & Rank Badges */
+    .rank-top3 {
+      color: #fbbf24 !important;
+    }
 
+    td.trend-cell {
+      text-align: center;
+      width: 58px;
+    }
+
+    .trend-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .trend-up {
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.12);
+    }
+
+    .trend-down {
+      color: #f87171;
+      background: rgba(248, 113, 113, 0.12);
+    }
+
+    .trend-same {
+      color: var(--text-muted);
+    }
+
+    .trend-new {
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.12);
+    }
+    
     td {
       padding: 0.65rem 1rem;
       vertical-align: middle;
@@ -357,6 +398,8 @@
 </head>
 <body>
 
+
+  
   <div class="container">
     <header>
       <h1>TAPbot - Tommie Athletics Standings</h1>
@@ -529,7 +572,7 @@
           </div>
         `;
       } else if (isPoll) {
-        // Table layout for USCHO National Polls (Rank, Team, Record, Points/FPV)
+        // Table layout for USCHO National Polls with Trend & Last Poll
         bodyContent = `
           <div class="table-wrap">
             <table>
@@ -539,21 +582,43 @@
                   <th>Team</th>
                   <th class="num">Record</th>
                   <th class="num pts-col">Pts (1st)</th>
+                  <th class="num">Last</th>
+                  <th class="num">Chg</th>
                 </tr>
               </thead>
               <tbody>
                 ${s.rows.map(r => {
                   const isUST = r.team && r.team.toLowerCase().includes("st. thomas");
+                  const top3Class = r.rank <= 3 ? "rank-top3" : "";
+
+                  let trendClass = "trend-same";
+                  let trendSymbol = r.trend || "=";
+
+                  if (r.trend_dir === "up") {
+                    trendClass = "trend-up";
+                    trendSymbol = `▲ ${r.trend.replace('+', '')}`;
+                  } else if (r.trend_dir === "down") {
+                    trendClass = "trend-down";
+                    trendSymbol = `▼ ${r.trend.replace('-', '')}`;
+                  } else if (r.trend_dir === "new") {
+                    trendClass = "trend-new";
+                    trendSymbol = "NEW";
+                  }
+
                   return `
                     <tr class="${isUST ? 'highlight-ust' : ''}">
-                      <td class="rank">${r.rank}</td>
+                      <td class="rank ${top3Class}">${r.rank}</td>
                       <td>
                         <div class="team-cell">
                           <span class="team-name">${escHtml(r.team)}</span>
                         </div>
                       </td>
-                      <td class="record">${escHtml(r.record)}</td>
-                      <td class="pts-col">${escHtml(r.pts)}</td>
+                      <td class="record">${escHtml(r.record || '—')}</td>
+                      <td class="pts-col">${escHtml(r.pts || '—')}</td>
+                      <td class="record">${escHtml(r.last_poll || 'NR')}</td>
+                      <td class="trend-cell">
+                        <span class="trend-badge ${trendClass}">${trendSymbol}</span>
+                      </td>
                     </tr>
                   `;
                 }).join("")}
