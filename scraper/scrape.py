@@ -239,15 +239,14 @@ def parse_standings_table(html, meta):
 
     target = None
 
-    # 1. First priority: Look explicitly for Sidearm's divisionless/overall table
+    # Priority 1: Direct Sidearm divisionless/overall table check
     divisionless = soup.select_one("table.table-divisionless, .table-divisionless table")
     if divisionless:
         target = divisionless
 
-    # 2. If skip_pods is True and no table-divisionless class was matched directly:
+    # Priority 2: Fallback candidate search
     if target is None:
-        candidate_tables = 
-[
+        candidate_tables = [
             t for t in soup.find_all("table")
             if any(
                 "team" in h.lower() or "school" in h.lower() or "member" in h.lower()
@@ -256,28 +255,22 @@ def parse_standings_table(html, meta):
         ]
 
         if not candidate_tables:
-            raise ValueError(f"No standings table found for {meta
-['name']}")
+            raise ValueError(f"No standings table found for {meta['name']}")
 
         if skip_pods:
-            # Filter out pod/group tables and pick the table with the most rows (overall table)
-            non_pod_tables = 
-[t for t in candidate_tables if not is_pods_table(t)]
+            non_pod_tables = [t for t in candidate_tables if not is_pods_table(t)]
             if non_pod_tables:
                 target = max(non_pod_tables, key=lambda t: len(body_rows(t)))
             else:
                 target = max(candidate_tables, key=lambda t: len(body_rows(t)))
         else:
-            target = candidate_tables
-[0]
+            target = candidate_tables[0]
 
     if target is None:
-        raise ValueError(f"Could not identify standings table for {meta
-['name']}")
+        raise ValueError(f"Could not identify standings table for {meta['name']}")
 
     headers    = header_cells(target)
-    hdrs_lower = 
-[h.lower() for h in headers]
+    hdrs_lower = [h.lower() for h in headers]
 
     def idx(*candidates):
         for c in candidates:
@@ -293,22 +286,26 @@ def parse_standings_table(html, meta):
                     return i
         return None
 
-   team_idx = exact_idx("team", "school", "member", "institution") or idx("team", "school", "member")
+    team_idx = exact_idx("team", "school", "member", "institution", "name") or idx("team", "school", "member", "institution", "name")
 
-    # Conference record
-    conf_combined = exact_idx("conf", "conference", "league") or idx("conf record", "conference record")
-    conf_w_idx = idx("conf w", "cw", "conference w") if conf_combined is None else None
-    conf_l_idx = idx("conf l", "cl", "conference l") if conf_combined is None else None
+    conf_combined = exact_idx("conf", "conference", "league", "wcha", "nchc")
+    if conf_combined is None:
+        conf_combined = idx("conf record", "conference record", "wcha record", "nchc record")
+    conf_w_idx = idx("conf w", "cw", "conference w", "wcha w") if conf_combined is None else None
+    conf_l_idx = idx("conf l", "cl", "conference l", "wcha l") if conf_combined is None else None
 
-    # Overall record
-    ovr_combined = exact_idx("overall", "ovr", "total") or idx("overall record", "ovr record", "total record")
+    ovr_combined = exact_idx("overall", "ovr", "total")
+    if ovr_combined is None:
+        ovr_combined = idx("overall record", "ovr record", "total record")
     ovr_w_idx = idx("overall w", "ow", "ovr w") if ovr_combined is None else None
     ovr_l_idx = idx("overall l", "ol", "ovr l") if ovr_combined is None else None
 
-    # Points column (PTS / CPTS)
     pts_idx = None
-    if point_col_type in ("cpts", "pts"):
-        pts_idx = exact_idx("cpts", "pts", "points", "conf pts") or idx("cpts", "pts")
+    if point_col_type == "cpts":
+        pts_idx = exact_idx("cpts", "conf pts", "pts", "points") or idx("cpts", "conf pts")
+    elif point_col_type == "pts":
+        pts_idx = exact_idx("pts", "points", "total pts", "tp", "wcha pts", "nchc pts") or idx("pts", "point")
+
     rows = []
     for tr in body_rows(target):
         cells = tr.find_all(["td", "th"])
