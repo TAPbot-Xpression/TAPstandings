@@ -378,6 +378,30 @@ def parse_standings_table(html, meta):
 def parse_uscho_poll_table(html, meta):
     soup = BeautifulSoup(html, "html.parser")
 
+    # 1. Extract Poll Date from header (e.g., "USCHO Division I Men's Poll - October 19, 2026")
+    poll_date = ""
+    for heading in soup.find_all(["h1", "h2", "h3", ".page-title", ".poll-title"]):
+        text = clean(heading.get_text())
+        m = re.search(r"-\s*([A-Za-z]+\.?\s+\d{1,2}(?:st|nd|rd|th)?(?:,?\s+\d{4})?)", text)
+        if m:
+            poll_date = m.group(1).strip()
+            break
+
+    # 2. Extract "Others receiving votes"
+    receiving_votes = ""
+    # Look for text or tags mentioning receiving votes
+    for elem in soup.find_all(["p", "div", "span", "td"]):
+        text = clean(elem.get_text())
+        if re.search(r"others?\s+receiving\s+votes", text, re.IGNORECASE):
+            # Clean up prefix like "Others receiving votes:"
+            cleaned_votes = re.sub(r"^.*?others?\s+receiving\s+votes[:\s]*", "", text, flags=re.IGNORECASE)
+            # Stop if navigation / footer text got bundled in
+            cleaned_votes = re.split(r"(?:USCHO Division|\* All USCHO|\bMenu\b)", cleaned_votes)[0].strip()
+            if cleaned_votes and len(cleaned_votes) > 2:
+                receiving_votes = cleaned_votes
+                break
+
+    # 3. Locate Main Standings Table
     target = soup.find("table", id="btable")
 
     if target is None:
@@ -459,7 +483,7 @@ def parse_uscho_poll_table(html, meta):
         m_pts = re.search(r"(\d+)", raw_pts)
         pts_num = m_pts.group(1) if m_pts else "0"
 
-        # Combine Pts and First Place Votes: "123 (12)" or "123"
+        # Combine Pts and First Place Votes
         if fpv and int(fpv) > 0:
             formatted_pts = f"{pts_num} ({fpv})"
         else:
@@ -469,7 +493,7 @@ def parse_uscho_poll_table(html, meta):
         raw_rec = cell_text(rec_idx) if rec_idx is not None else cell_text(3)
         record = raw_rec.replace("–", "-") if raw_rec else "—"
 
-        # Extract Last Poll & calculate movement (trend)
+        # Extract Last Poll & calculate movement
         raw_last = cell_text(last_idx) if last_idx is not None else (cell_text(5) if len(cells) > 5 else "")
         last_match = re.search(r"(\d+)", raw_last)
 
@@ -506,10 +530,12 @@ def parse_uscho_poll_table(html, meta):
         raise ValueError(f"No poll rows parsed from table for {meta['name']}")
 
     return {
-        "id":     meta["id"],
-        "name":   meta["name"],
-        "source": meta["url"],
-        "rows":   rows,
+        "id":              meta["id"],
+        "name":            meta["name"],
+        "source":          meta["url"],
+        "poll_date":       poll_date,
+        "receiving_votes": receiving_votes,
+        "rows":            rows,
     }
 
 
