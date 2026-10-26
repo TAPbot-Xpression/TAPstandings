@@ -701,12 +701,6 @@
 
       // --- ADDED: Poll Date in Header & Receiving Votes Footer ---
       const dateBadge = s.poll_date ? `<span class="poll-date-badge">${escHtml(s.poll_date)}</span>` : "";
-      
-      const receivingVotesHtml = (isPoll && s.receiving_votes) ? `
-        <div class="receiving-votes">
-          <span class="rv-label">Others receiving votes:</span> ${escHtml(s.receiving_votes)}
-        </div>
-      ` : "";
 
       const sourceLinkText = isPoll ? "Official USCHO Poll ↗" : "Official Standings ↗";
       const sourceLink = s.source ? `<a href="${escHtml(s.source)}" target="_blank" rel="noopener">${sourceLinkText}</a>` : `<span></span>`;
@@ -722,7 +716,6 @@
             <span class="badge ${badgeClass}">${badgeText}</span>
           </div>
           ${bodyContent}
-          ${receivingVotesHtml}
           <div class="card-footer">
             ${sourceLink}
             <span>${updatedTime ? 'Scanned ' + updatedTime : ''}</span>
