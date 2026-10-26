@@ -79,9 +79,9 @@ TEAM_ACRONYMS = {
 }
 
 # ── Target Configuration ──────────────────────────────────────────────────────
-# Includes conference standings and USCHO national polls
+# Standings + USCHO Polls in requested sequence
 FEEDS_CONFIG = [
-    # ── Standings ─────────────────────────────────────────────────────────────
+    # ── Fall Sports ───────────────────────────────────────────────────────────
     {
         "id": "wsoc",
         "name": "Summit League Women's Soccer",
@@ -114,6 +114,7 @@ FEEDS_CONFIG = [
         "point_col": None,
         "skip_pods": False,
     },
+    # ── Winter Sports & Polls ─────────────────────────────────────────────────
     {
         "id": "whockey",
         "name": "WCHA Women's Ice Hockey",
@@ -121,6 +122,12 @@ FEEDS_CONFIG = [
         "url": "https://wcha.com/standings.aspx?path=whockey",
         "point_col": "pts",
         "skip_pods": False,
+    },
+    {
+        "id": "uscho_womens_poll",
+        "name": "USCHO Women's Division I Ice Hockey Poll",
+        "type": "poll",
+        "url": "https://www.uscho.com/rankings/d-i-womens-poll",
     },
     {
         "id": "mhockey",
@@ -131,12 +138,10 @@ FEEDS_CONFIG = [
         "skip_pods": False,
     },
     {
-        "id": "mbball",
-        "name": "Summit League Men's Basketball",
-        "type": "standings",
-        "url": "https://thesummitleague.org/standings.aspx?path=mbball",
-        "point_col": None,
-        "skip_pods": False,
+        "id": "uscho_mens_poll",
+        "name": "USCHO Men's Division I Ice Hockey Poll",
+        "type": "poll",
+        "url": "https://www.uscho.com/rankings/d-i-mens-poll",
     },
     {
         "id": "wbball",
@@ -146,6 +151,15 @@ FEEDS_CONFIG = [
         "point_col": None,
         "skip_pods": False,
     },
+    {
+        "id": "mbball",
+        "name": "Summit League Men's Basketball",
+        "type": "standings",
+        "url": "https://thesummitleague.org/standings.aspx?path=mbball",
+        "point_col": None,
+        "skip_pods": False,
+    },
+    # ── Spring Sports ─────────────────────────────────────────────────────────
     {
         "id": "summit_193",
         "name": "Summit League Softball",
@@ -161,19 +175,6 @@ FEEDS_CONFIG = [
         "url": "https://thesummitleague.org/standings.aspx?standings=195",
         "point_col": None,
         "skip_pods": False,
-    },
-    # ── USCHO National Polls ──────────────────────────────────────────────────
-    {
-        "id": "uscho_mens_poll",
-        "name": "USCHO Men's Division I Ice Hockey Poll",
-        "type": "poll",
-        "url": "https://www.uscho.com/rankings/d-i-mens-poll",
-    },
-    {
-        "id": "uscho_womens_poll",
-        "name": "USCHO Women's Division I Ice Hockey Poll",
-        "type": "poll",
-        "url": "https://www.uscho.com/rankings/d-i-womens-poll",
     },
 ]
 
@@ -349,17 +350,21 @@ def parse_standings_table(html, meta):
     }
 
 
-# ── USCHO Poll Table Parser ───────────────────────────────────────────────────
+# ── USCHO Poll Table Parser (Targets Bootstrap-Vue #btable) ───────────────────
 
 def parse_uscho_poll_table(html, meta):
     soup = BeautifulSoup(html, "html.parser")
 
-    target = None
-    for table in soup.find_all("table"):
-        hdrs = [h.lower() for h in header_cells(table)]
-        if any("team" in h or "school" in h for h in hdrs) and any("pts" in h or "point" in h for h in hdrs):
-            target = table
-            break
+    # USCHO renders its poll inside <table id="btable">
+    target = soup.find("table", id="btable")
+
+    if target is None:
+        # Fallback search across any table containing Rnk / Team / Pts
+        for table in soup.find_all("table"):
+            hdrs = [h.lower() for h in header_cells(table)]
+            if any("team" in h for h in hdrs) and any("rnk" in h or "rank" in h or "pts" in h for h in hdrs):
+                target = table
+                break
 
     if target is None:
         tables = soup.find_all("table")
@@ -367,7 +372,7 @@ def parse_uscho_poll_table(html, meta):
             target = tables[0]
 
     if target is None:
-        raise ValueError(f"Could not find USCHO poll table for {meta['name']}")
+        raise ValueError(f"Could not find USCHO #btable for {meta['name']}")
 
     headers = header_cells(target)
     hdrs_lower = [h.lower() for h in headers]
@@ -386,16 +391,16 @@ def parse_uscho_poll_table(html, meta):
                     return i
         return None
 
-    rank_idx = exact_idx("rank", "#", "rk") or idx("rank", "#")
-    team_idx = idx("team", "school", "institution", "college")
+    rank_idx = exact_idx("rnk", "rank", "#", "rk") or idx("rnk", "rank")
+    team_idx = exact_idx("team", "school") or idx("team", "school")
+    fpv_idx  = idx("first place", "(first place votes)", "fpv", "1st")
+    rec_idx  = exact_idx("record", "rec", "w-l-t") or idx("record", "rec")
     pts_idx  = exact_idx("pts", "points", "total") or idx("pts", "point")
-    fpv_idx  = exact_idx("1st", "(1st)", "fpv", "first", "1st place") or idx("1st", "fpv", "first")
-    rec_idx  = idx("record", "rec", "w-l-t", "overall")
 
     rows = []
     for tr in body_rows(target):
         cells = tr.find_all(["td", "th"])
-        if len(cells) < 3:
+        if len(cells) < 4:
             continue
 
         def cell_text(i):
@@ -403,52 +408,54 @@ def parse_uscho_poll_table(html, meta):
                 return ""
             return clean(cells[i].get_text())
 
-        raw_team = team_text(cells[team_idx]) if team_idx is not None else ""
-        if not raw_team or raw_team.lower() in ("team", "school", "rank", "ranking"):
+        raw_team = team_text(cells[team_idx]) if team_idx is not None else cell_text(1)
+        if not raw_team or raw_team.lower() in ("team", "school", "rnk", "rank", "ranking"):
             continue
 
-        # Check for first-place votes embedded in team string (e.g. "Boston College (45)")
-        fpv_embedded = None
+        # Extract Rank (cell index 0 fallback)
+        raw_rank = cell_text(rank_idx) if rank_idx is not None else cell_text(0)
+        rank_match = re.search(r"(\d+)", raw_rank)
+        rank_val = int(rank_match.group(1)) if rank_match else len(rows) + 1
+
+        # Check for first-place votes embedded in team string or in its own column
+        fpv = None
         m_fpv = re.search(r"\(([\d]+)\)", raw_team)
         if m_fpv:
-            fpv_embedded = m_fpv.group(1)
+            fpv = m_fpv.group(1)
             cleaned_team = clean(raw_team[:m_fpv.start()])
         else:
             cleaned_team = raw_team
 
-        # Rank
-        rank_val = cell_text(rank_idx) if rank_idx is not None else str(len(rows) + 1)
-        rank_val = re.sub(r"[^\d]", "", rank_val) or str(len(rows) + 1)
-
-        # Points and First Place Votes
-        raw_pts = cell_text(pts_idx) if pts_idx is not None else "0"
-        raw_pts = re.sub(r"[^\d]", "", raw_pts) or "0"
-
-        fpv = fpv_embedded
         if fpv is None and fpv_idx is not None:
-            fpv_text = cell_text(fpv_idx)
-            m_col = re.search(r"(\d+)", fpv_text)
+            raw_fpv = cell_text(fpv_idx)
+            m_col = re.search(r"(\d+)", raw_fpv)
             if m_col:
                 fpv = m_col.group(1)
 
-        # Format combined Points and FPV: "123 (12)" or "123"
-        if fpv and int(fpv) > 0:
-            formatted_pts = f"{raw_pts} ({fpv})"
-        else:
-            formatted_pts = raw_pts
+        # Extract Points
+        raw_pts = cell_text(pts_idx) if pts_idx is not None else cell_text(4)
+        m_pts = re.search(r"(\d+)", raw_pts)
+        pts_num = m_pts.group(1) if m_pts else "0"
 
-        # Record
-        record = cell_text(rec_idx).replace("–", "-") if rec_idx is not None else "—"
+        # Combine Pts and First Place Votes: "123 (12)" or "123"
+        if fpv and int(fpv) > 0:
+            formatted_pts = f"{pts_num} ({fpv})"
+        else:
+            formatted_pts = pts_num
+
+        # Extract Record
+        raw_rec = cell_text(rec_idx) if rec_idx is not None else cell_text(3)
+        record = raw_rec.replace("–", "-") if raw_rec else "—"
 
         rows.append({
-            "rank":   int(rank_val),
+            "rank":   rank_val,
             "team":   cleaned_team,
             "pts":    formatted_pts,
             "record": record or "—",
         })
 
     if not rows:
-        raise ValueError(f"No poll rows parsed for {meta['name']}")
+        raise ValueError(f"No poll rows parsed from #btable for {meta['name']}")
 
     return {
         "id":     meta["id"],
@@ -469,10 +476,11 @@ def fetch_all_rendered(feeds):
         context = browser.new_context(user_agent=UA)
         page    = context.new_page()
 
+        # Only block heavy media — allow JS and stylesheets so Vue mounts #btable properly
         page.route(
             "**/*",
             lambda route: route.abort()
-            if route.request.resource_type in ("image", "media", "font", "stylesheet")
+            if route.request.resource_type in ("image", "media", "font")
             else route.continue_(),
         )
 
@@ -484,10 +492,18 @@ def fetch_all_rendered(feeds):
             print(f"Fetching [{feed['name']}] -> {url} ...")
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=45000)
-                try:
-                    page.wait_for_selector("table", timeout=15000)
-                except Exception:
-                    print(f"  ⚠ No table selector found within timeout for {feed_id}")
+
+                # Wait specifically for table rows to be injected
+                if feed_type == "poll":
+                    try:
+                        page.wait_for_selector("#btable tbody tr", timeout=15000)
+                    except Exception:
+                        page.wait_for_selector("table tbody tr", timeout=10000)
+                else:
+                    try:
+                        page.wait_for_selector("table tbody tr", timeout=15000)
+                    except Exception:
+                        page.wait_for_selector("table", timeout=5000)
 
                 html = page.content()
 
