@@ -2,7 +2,9 @@ name: Update data and deploy site
 
 on:
   schedule:
-    - cron: "0 14 * * *"   # 9:00 AM CT (CDT = 14:00 UTC, CST = 15:00 UTC)
+    - cron: "0 14 * * *"   # 9:00 AM CT (CDT = UTC-5)
+    - cron: "0 17 * * *"   # 12:00 PM CT (CDT = UTC-5)
+    - cron: "0 21 * * *"   # 4:00 PM CT (CDT = UTC-5)
   workflow_dispatch:         # Actions tab > Run workflow (manual trigger)
   push:
     branches: [main]
@@ -22,7 +24,6 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - uses: actions/checkout@v4
         with:
