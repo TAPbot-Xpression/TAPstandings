@@ -316,7 +316,9 @@ def parse_standings_table(html, meta):
             return clean(cells[i].get_text())
 
         team = team_text(cells[team_idx]) if team_idx is not None else ""
-        if not team or team.lower() in ("team", "school", "member", "institution"):
+        
+        # Skip empty names, header titles, and Pod headers (e.g. "Pod A", "Pod B")
+        if not team or team.lower() in ("team", "school", "member", "institution") or team.lower().startswith("pod"):
             continue
 
         acronym = get_team_acronym(team)
