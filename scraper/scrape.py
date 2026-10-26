@@ -3,7 +3,8 @@
 Fetch standings and national polls from Summit League, PFL, NCHC, WCHA, and USCHO.
 Extracts:
   - Sports Standings: Team Name, Acronym, Conference W-L, Overall W-L, CPTS/PTS
-  - USCHO Polls: Rank, Team Name, Record, Pts + First-Place Votes formatted as "123 (12)"
+  - USCHO Polls: Rank, Team Name, Record, Pts + First-Place Votes formatted as "123 (12)",
+    Last Poll rank, and Poll movement (up/down/same/new).
 
 Writes structured output to docs/data.json.
 
@@ -79,7 +80,6 @@ TEAM_ACRONYMS = {
 }
 
 # ── Target Configuration ──────────────────────────────────────────────────────
-# Standings + USCHO Polls in requested sequence
 FEEDS_CONFIG = [
     # ── Fall Sports ───────────────────────────────────────────────────────────
     {
@@ -355,11 +355,9 @@ def parse_standings_table(html, meta):
 def parse_uscho_poll_table(html, meta):
     soup = BeautifulSoup(html, "html.parser")
 
-    # USCHO renders its poll inside <table id="btable">
     target = soup.find("table", id="btable")
 
     if target is None:
-        # Fallback search across any table containing Rnk / Team / Pts
         for table in soup.find_all("table"):
             hdrs = [h.lower() for h in header_cells(table)]
             if any("team" in h for h in hdrs) and any("rnk" in h or "rank" in h or "pts" in h for h in hdrs):
@@ -372,7 +370,7 @@ def parse_uscho_poll_table(html, meta):
             target = tables[0]
 
     if target is None:
-        raise ValueError(f"Could not find USCHO #btable for {meta['name']}")
+        raise ValueError(f"Could not find USCHO table for {meta['name']}")
 
     headers = header_cells(target)
     hdrs_lower = [h.lower() for h in headers]
@@ -396,6 +394,7 @@ def parse_uscho_poll_table(html, meta):
     fpv_idx  = idx("first place", "(first place votes)", "fpv", "1st")
     rec_idx  = exact_idx("record", "rec", "w-l-t") or idx("record", "rec")
     pts_idx  = exact_idx("pts", "points", "total") or idx("pts", "point")
+    last_idx = exact_idx("last poll", "last", "prev", "last rnk") or idx("last", "prev")
 
     rows = []
     for tr in body_rows(target):
@@ -412,12 +411,12 @@ def parse_uscho_poll_table(html, meta):
         if not raw_team or raw_team.lower() in ("team", "school", "rnk", "rank", "ranking"):
             continue
 
-        # Extract Rank (cell index 0 fallback)
+        # Extract Rank
         raw_rank = cell_text(rank_idx) if rank_idx is not None else cell_text(0)
         rank_match = re.search(r"(\d+)", raw_rank)
         rank_val = int(rank_match.group(1)) if rank_match else len(rows) + 1
 
-        # Check for first-place votes embedded in team string or in its own column
+        # Check for first-place votes embedded in team string or separate column
         fpv = None
         m_fpv = re.search(r"\(([\d]+)\)", raw_team)
         if m_fpv:
@@ -443,19 +442,45 @@ def parse_uscho_poll_table(html, meta):
         else:
             formatted_pts = pts_num
 
-        # Extract Record
+        # Extract Overall Record
         raw_rec = cell_text(rec_idx) if rec_idx is not None else cell_text(3)
         record = raw_rec.replace("–", "-") if raw_rec else "—"
 
+        # Extract Last Poll & calculate movement (trend)
+        raw_last = cell_text(last_idx) if last_idx is not None else (cell_text(5) if len(cells) > 5 else "")
+        last_match = re.search(r"(\d+)", raw_last)
+
+        if last_match:
+            last_rank = int(last_match.group(1))
+            diff = last_rank - rank_val
+            if diff > 0:
+                trend = f"+{diff}"
+                trend_dir = "up"
+            elif diff < 0:
+                trend = f"{diff}"
+                trend_dir = "down"
+            else:
+                trend = "="
+                trend_dir = "same"
+            last_display = str(last_rank)
+        else:
+            last_rank = None
+            last_display = "NR" if ("nr" in raw_last.lower() or not raw_last) else raw_last
+            trend = "NEW"
+            trend_dir = "new"
+
         rows.append({
-            "rank":   rank_val,
-            "team":   cleaned_team,
-            "pts":    formatted_pts,
-            "record": record or "—",
+            "rank":      rank_val,
+            "team":      cleaned_team,
+            "record":    record or "—",
+            "pts":       formatted_pts,
+            "last_poll": last_display,
+            "trend":     trend,
+            "trend_dir": trend_dir,
         })
 
     if not rows:
-        raise ValueError(f"No poll rows parsed from #btable for {meta['name']}")
+        raise ValueError(f"No poll rows parsed from table for {meta['name']}")
 
     return {
         "id":     meta["id"],
@@ -476,7 +501,7 @@ def fetch_all_rendered(feeds):
         context = browser.new_context(user_agent=UA)
         page    = context.new_page()
 
-        # Only block heavy media — allow JS and stylesheets so Vue mounts #btable properly
+        # Block media/fonts to speed up, keep scripts/styles for dynamic table mounting
         page.route(
             "**/*",
             lambda route: route.abort()
@@ -493,7 +518,6 @@ def fetch_all_rendered(feeds):
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=45000)
 
-                # Wait specifically for table rows to be injected
                 if feed_type == "poll":
                     try:
                         page.wait_for_selector("#btable tbody tr", timeout=15000)
