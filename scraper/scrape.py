@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
 """
-Fetch standings from multiple Summit League, PFL, NCHC, and WCHA sports pages.
+Fetch standings and national polls from Summit League, PFL, NCHC, WCHA, and USCHO.
 Extracts:
-  - Team Name & Team Acronym
-  - Conference record (W-L)
-  - Overall record (W-L)
-  - CPTS for MSOC & WSOC (Summit League Soccer points)
-  - PTS for NCHC Men's Ice Hockey and WCHA Women's Ice Hockey points
-  - Skips Pods table for WSOC and pulls the full 8-team table
+  - Sports Standings: Team Name, Acronym, Conference W-L, Overall W-L, CPTS/PTS
+  - USCHO Polls: Rank, Team Name, Record, Pts + First-Place Votes formatted as "123 (12)"
 
 Writes structured output to docs/data.json.
 
 Safe by design: if any individual source fails, the last good data for that
-sport stays in the file marked "stale", so the website never goes blank.
+sport/poll stays in the file marked "stale", so the website never goes blank.
 
 Usage:
     python scraper/scrape.py
@@ -30,7 +26,7 @@ from bs4 import BeautifulSoup
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
-# ── Team Acronym Translation Map ──────────────────────────────────────────────
+# ── Team Acronym Translation Map (for Standings) ──────────────────────────────
 TEAM_ACRONYMS = {
     # ── Summit League ─────────────────────────────────────────────────────────
     "North Dakota":             "UND",
@@ -82,11 +78,14 @@ TEAM_ACRONYMS = {
     "Minnesota State":          "MSU",
 }
 
-# ── Target Sports Configuration ────────────────────────────────────────────────
-SPORTS_CONFIG = [
+# ── Target Configuration ──────────────────────────────────────────────────────
+# Includes conference standings and USCHO national polls
+FEEDS_CONFIG = [
+    # ── Standings ─────────────────────────────────────────────────────────────
     {
         "id": "wsoc",
         "name": "Summit League Women's Soccer",
+        "type": "standings",
         "url": "https://thesummitleague.org/standings.aspx?path=wsoc",
         "point_col": "cpts",
         "skip_pods": True,
@@ -94,6 +93,7 @@ SPORTS_CONFIG = [
     {
         "id": "msoc",
         "name": "Summit League Men's Soccer",
+        "type": "standings",
         "url": "https://thesummitleague.org/standings.aspx?path=msoc",
         "point_col": "cpts",
         "skip_pods": False,
@@ -101,6 +101,7 @@ SPORTS_CONFIG = [
     {
         "id": "pfl",
         "name": "Pioneer Football League",
+        "type": "standings",
         "url": "https://pioneer-football.org/standings.aspx?standings=19",
         "point_col": None,
         "skip_pods": False,
@@ -108,6 +109,7 @@ SPORTS_CONFIG = [
     {
         "id": "wvball",
         "name": "Summit League Women's Volleyball",
+        "type": "standings",
         "url": "https://thesummitleague.org/standings.aspx?path=wvball",
         "point_col": None,
         "skip_pods": False,
@@ -115,6 +117,7 @@ SPORTS_CONFIG = [
     {
         "id": "whockey",
         "name": "WCHA Women's Ice Hockey",
+        "type": "standings",
         "url": "https://wcha.com/standings.aspx?path=whockey",
         "point_col": "pts",
         "skip_pods": False,
@@ -122,6 +125,7 @@ SPORTS_CONFIG = [
     {
         "id": "mhockey",
         "name": "NCHC Men's Ice Hockey",
+        "type": "standings",
         "url": "https://nchchockey.com/standings.aspx?path=mhockey",
         "point_col": "pts",
         "skip_pods": False,
@@ -129,6 +133,7 @@ SPORTS_CONFIG = [
     {
         "id": "mbball",
         "name": "Summit League Men's Basketball",
+        "type": "standings",
         "url": "https://thesummitleague.org/standings.aspx?path=mbball",
         "point_col": None,
         "skip_pods": False,
@@ -136,6 +141,7 @@ SPORTS_CONFIG = [
     {
         "id": "wbball",
         "name": "Summit League Women's Basketball",
+        "type": "standings",
         "url": "https://thesummitleague.org/standings.aspx?path=wbball",
         "point_col": None,
         "skip_pods": False,
@@ -143,6 +149,7 @@ SPORTS_CONFIG = [
     {
         "id": "summit_193",
         "name": "Summit League Softball",
+        "type": "standings",
         "url": "https://thesummitleague.org/standings.aspx?standings=193",
         "point_col": None,
         "skip_pods": False,
@@ -150,9 +157,23 @@ SPORTS_CONFIG = [
     {
         "id": "summit_195",
         "name": "Summit League Baseball",
+        "type": "standings",
         "url": "https://thesummitleague.org/standings.aspx?standings=195",
         "point_col": None,
         "skip_pods": False,
+    },
+    # ── USCHO National Polls ──────────────────────────────────────────────────
+    {
+        "id": "uscho_mens_poll",
+        "name": "USCHO Men's Division I Ice Hockey Poll",
+        "type": "poll",
+        "url": "https://www.uscho.com/rankings/d-i-mens-poll",
+    },
+    {
+        "id": "uscho_womens_poll",
+        "name": "USCHO Women's Division I Ice Hockey Poll",
+        "type": "poll",
+        "url": "https://www.uscho.com/rankings/d-i-womens-poll",
     },
 ]
 
@@ -166,22 +187,18 @@ def get_team_acronym(team_name):
     """Translate raw team name into standard acronym."""
     cleaned = clean(team_name)
 
-    # Exact match
     if cleaned in TEAM_ACRONYMS:
         return TEAM_ACRONYMS[cleaned]
 
-    # Case-insensitive exact match
     cleaned_lower = cleaned.lower()
     for full_name, acronym in TEAM_ACRONYMS.items():
         if full_name.lower() == cleaned_lower:
             return acronym
 
-    # Partial match — full_name is contained within the scraped team string
     for full_name, acronym in TEAM_ACRONYMS.items():
         if full_name.lower() in cleaned_lower:
             return acronym
 
-    # Fallback: initials of capitalised words
     words = [w for w in re.split(r"[\s\-\.]+", cleaned) if w and w[0].isupper()]
     if words:
         return "".join(w[0] for w in words).upper()
@@ -214,12 +231,11 @@ def is_pods_table(table):
 
 # ── Sidearm Standings Table Parser ────────────────────────────────────────────
 
-def parse_standings_table(html, sport_meta):
+def parse_standings_table(html, meta):
     soup = BeautifulSoup(html, "html.parser")
-    point_col_type = sport_meta.get("point_col")
-    skip_pods      = sport_meta.get("skip_pods", False)
+    point_col_type = meta.get("point_col")
+    skip_pods      = meta.get("skip_pods", False)
 
-    # Find candidate tables that have a Team/School column
     candidate_tables = [
         t for t in soup.find_all("table")
         if any(
@@ -229,7 +245,7 @@ def parse_standings_table(html, sport_meta):
     ]
 
     if not candidate_tables:
-        raise ValueError(f"No standings table found for {sport_meta['name']}")
+        raise ValueError(f"No standings table found for {meta['name']}")
 
     if skip_pods:
         target = next((t for t in candidate_tables if not is_pods_table(t)), None)
@@ -239,7 +255,7 @@ def parse_standings_table(html, sport_meta):
         target = candidate_tables[0]
 
     if target is None:
-        raise ValueError(f"Could not identify standings table for {sport_meta['name']}")
+        raise ValueError(f"Could not identify standings table for {meta['name']}")
 
     headers    = header_cells(target)
     hdrs_lower = [h.lower() for h in headers]
@@ -260,28 +276,24 @@ def parse_standings_table(html, sport_meta):
 
     team_idx = idx("team", "school", "member", "institution", "name")
 
-    # Conference record (WCHA / NCHC / Summit / PFL)
     conf_combined = exact_idx("conf", "conference", "league", "wcha", "nchc")
     if conf_combined is None:
         conf_combined = idx("conf record", "conference record", "wcha record", "nchc record")
     conf_w_idx = idx("conf w", "cw", "conference w", "wcha w") if conf_combined is None else None
     conf_l_idx = idx("conf l", "cl", "conference l", "wcha l") if conf_combined is None else None
 
-    # Overall record
     ovr_combined = exact_idx("overall", "ovr", "total")
     if ovr_combined is None:
         ovr_combined = idx("overall record", "ovr record", "total record")
     ovr_w_idx = idx("overall w", "ow", "ovr w") if ovr_combined is None else None
     ovr_l_idx = idx("overall l", "ol", "ovr l") if ovr_combined is None else None
 
-    # Points column
     pts_idx = None
     if point_col_type == "cpts":
         pts_idx = exact_idx("cpts", "conf pts", "pts", "points") or idx("cpts", "conf pts")
     elif point_col_type == "pts":
         pts_idx = exact_idx("pts", "points", "total pts", "tp", "wcha pts", "nchc pts") or idx("pts", "point")
 
-    # Parse rows
     rows = []
     for tr in body_rows(target):
         cells = tr.find_all(["td", "th"])
@@ -297,7 +309,6 @@ def parse_standings_table(html, sport_meta):
 
         acronym = get_team_acronym(team)
 
-        # Conference record
         if conf_combined is not None:
             conf = cell_text(conf_combined).replace("–", "-") or "0-0"
         elif conf_w_idx is not None and conf_l_idx is not None:
@@ -305,7 +316,6 @@ def parse_standings_table(html, sport_meta):
         else:
             conf = "—"
 
-        # Overall record
         if ovr_combined is not None:
             ovr = cell_text(ovr_combined).replace("–", "-") or "0-0"
         elif ovr_w_idx is not None and ovr_l_idx is not None:
@@ -329,19 +339,128 @@ def parse_standings_table(html, sport_meta):
         rows.append(row_data)
 
     if not rows:
-        raise ValueError(f"No team rows parsed for {sport_meta['name']}")
+        raise ValueError(f"No team rows parsed for {meta['name']}")
 
     return {
-        "id":     sport_meta["id"],
-        "name":   sport_meta["name"],
-        "source": sport_meta["url"],
+        "id":     meta["id"],
+        "name":   meta["name"],
+        "source": meta["url"],
+        "rows":   rows,
+    }
+
+
+# ── USCHO Poll Table Parser ───────────────────────────────────────────────────
+
+def parse_uscho_poll_table(html, meta):
+    soup = BeautifulSoup(html, "html.parser")
+
+    target = None
+    for table in soup.find_all("table"):
+        hdrs = [h.lower() for h in header_cells(table)]
+        if any("team" in h or "school" in h for h in hdrs) and any("pts" in h or "point" in h for h in hdrs):
+            target = table
+            break
+
+    if target is None:
+        tables = soup.find_all("table")
+        if tables:
+            target = tables[0]
+
+    if target is None:
+        raise ValueError(f"Could not find USCHO poll table for {meta['name']}")
+
+    headers = header_cells(target)
+    hdrs_lower = [h.lower() for h in headers]
+
+    def idx(*candidates):
+        for c in candidates:
+            for i, h in enumerate(hdrs_lower):
+                if c in h:
+                    return i
+        return None
+
+    def exact_idx(*candidates):
+        for c in candidates:
+            for i, h in enumerate(hdrs_lower):
+                if h == c:
+                    return i
+        return None
+
+    rank_idx = exact_idx("rank", "#", "rk") or idx("rank", "#")
+    team_idx = idx("team", "school", "institution", "college")
+    pts_idx  = exact_idx("pts", "points", "total") or idx("pts", "point")
+    fpv_idx  = exact_idx("1st", "(1st)", "fpv", "first", "1st place") or idx("1st", "fpv", "first")
+    rec_idx  = idx("record", "rec", "w-l-t", "overall")
+
+    rows = []
+    for tr in body_rows(target):
+        cells = tr.find_all(["td", "th"])
+        if len(cells) < 3:
+            continue
+
+        def cell_text(i):
+            if i is None or i >= len(cells):
+                return ""
+            return clean(cells[i].get_text())
+
+        raw_team = team_text(cells[team_idx]) if team_idx is not None else ""
+        if not raw_team or raw_team.lower() in ("team", "school", "rank", "ranking"):
+            continue
+
+        # Check for first-place votes embedded in team string (e.g. "Boston College (45)")
+        fpv_embedded = None
+        m_fpv = re.search(r"\(([\d]+)\)", raw_team)
+        if m_fpv:
+            fpv_embedded = m_fpv.group(1)
+            cleaned_team = clean(raw_team[:m_fpv.start()])
+        else:
+            cleaned_team = raw_team
+
+        # Rank
+        rank_val = cell_text(rank_idx) if rank_idx is not None else str(len(rows) + 1)
+        rank_val = re.sub(r"[^\d]", "", rank_val) or str(len(rows) + 1)
+
+        # Points and First Place Votes
+        raw_pts = cell_text(pts_idx) if pts_idx is not None else "0"
+        raw_pts = re.sub(r"[^\d]", "", raw_pts) or "0"
+
+        fpv = fpv_embedded
+        if fpv is None and fpv_idx is not None:
+            fpv_text = cell_text(fpv_idx)
+            m_col = re.search(r"(\d+)", fpv_text)
+            if m_col:
+                fpv = m_col.group(1)
+
+        # Format combined Points and FPV: "123 (12)" or "123"
+        if fpv and int(fpv) > 0:
+            formatted_pts = f"{raw_pts} ({fpv})"
+        else:
+            formatted_pts = raw_pts
+
+        # Record
+        record = cell_text(rec_idx).replace("–", "-") if rec_idx is not None else "—"
+
+        rows.append({
+            "rank":   int(rank_val),
+            "team":   cleaned_team,
+            "pts":    formatted_pts,
+            "record": record or "—",
+        })
+
+    if not rows:
+        raise ValueError(f"No poll rows parsed for {meta['name']}")
+
+    return {
+        "id":     meta["id"],
+        "name":   meta["name"],
+        "source": meta["url"],
         "rows":   rows,
     }
 
 
 # ── Playwright Fetch ──────────────────────────────────────────────────────────
 
-def fetch_all_rendered(sports):
+def fetch_all_rendered(feeds):
     from playwright.sync_api import sync_playwright
 
     scraped_data = {}
@@ -357,24 +476,32 @@ def fetch_all_rendered(sports):
             else route.continue_(),
         )
 
-        for sport in sports:
-            sport_id = sport["id"]
-            url      = sport["url"]
-            print(f"Fetching [{sport['name']}] -> {url} ...")
+        for feed in feeds:
+            feed_id   = feed["id"]
+            feed_type = feed.get("type", "standings")
+            url       = feed["url"]
+
+            print(f"Fetching [{feed['name']}] -> {url} ...")
             try:
                 page.goto(url, wait_until="domcontentloaded", timeout=45000)
                 try:
                     page.wait_for_selector("table", timeout=15000)
                 except Exception:
-                    print(f"  ⚠ No table selector found within timeout for {sport_id}")
+                    print(f"  ⚠ No table selector found within timeout for {feed_id}")
+
                 html = page.content()
-                data = parse_standings_table(html, sport)
-                scraped_data[sport_id] = {"status": "ok", **data}
-                pts_note = f" (with {sport['point_col'].upper()})" if sport.get("point_col") else ""
+
+                if feed_type == "poll":
+                    data = parse_uscho_poll_table(html, feed)
+                else:
+                    data = parse_standings_table(html, feed)
+
+                scraped_data[feed_id] = {"status": "ok", **data}
+                pts_note = f" (with {feed['point_col'].upper()})" if feed.get("point_col") else ""
                 print(f"  ✓ Parsed {len(data['rows'])} rows{pts_note}.")
             except Exception as exc:
-                print(f"  ✗ Error [{sport_id}]: {exc}", file=sys.stderr)
-                scraped_data[sport_id] = {
+                print(f"  ✗ Error [{feed_id}]: {exc}", file=sys.stderr)
+                scraped_data[feed_id] = {
                     "status": "error",
                     "error":  str(exc)[:300],
                     "rows":   [],
@@ -404,12 +531,12 @@ def main():
         except Exception:
             pass
 
-    new_scraped       = fetch_all_rendered(SPORTS_CONFIG)
+    new_scraped       = fetch_all_rendered(FEEDS_CONFIG)
     current_timestamp = now_iso()
     final_sports      = {}
 
-    for sport in SPORTS_CONFIG:
-        s_id = sport["id"]
+    for feed in FEEDS_CONFIG:
+        s_id = feed["id"]
         res  = new_scraped.get(s_id)
         old  = old_sports.get(s_id)
 
@@ -426,8 +553,8 @@ def main():
         else:
             final_sports[s_id] = res or {
                 "id":     s_id,
-                "name":   sport["name"],
-                "source": sport["url"],
+                "name":   feed["name"],
+                "source": feed["url"],
                 "status": "error",
                 "rows":   [],
             }
@@ -442,7 +569,7 @@ def main():
         json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
         encoding="utf-8",
     )
-    print(f"\n✓ Successfully wrote {len(final_sports)} sports to {out_path}")
+    print(f"\n✓ Successfully wrote {len(final_sports)} feeds to {out_path}")
 
 
 if __name__ == "__main__":
