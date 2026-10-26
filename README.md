@@ -1,221 +1,99 @@
-# TAPstandings — University of St. Thomas Athletics
-
-> **Automated conference standings for Tommie Athletics, built for use with TAPbot in Xpression.**
-
----
-
-## Overview
-
-**TAPstandings** is a Python-based web scraper developed by and for the **University of St. Thomas** athletics department. It automatically collects up-to-date standings from the conferences St. Thomas competes in and publishes them to a structured JSON file used by TAPbot inside the Xpression platform.
-
-Every morning at **9:00 AM**, the bot scans official conference websites and refreshes standings data — so your Xpression workflows always have current information without any manual effort.
+# TAPstandings — Tommie Athletic Productions
+> **Automated conference standings and national polls pipeline for Tommie Athletic Productions broadcast graphics and Ross XPression.**
 
 ---
 
-## Conferences & Sports Covered
+## 💜 Overview
 
-TAPstandings tracks standings across **three conferences** and **nine sports**:
+As the **University of St. Thomas** competes across multiple NCAA Division I conferences—and frequently appears in national rankings—keeping broadcast graphics up-to-date with live records, conference points, and national poll rankings can quickly become a manual headache.
 
-### 🏔️ Summit League
-| Sport | ID | Points Tracked |
-|---|---|---|
-| Women's Volleyball | `wvball` | — |
-| Men's Soccer | `msoc` | ✅ Conference Points (CPTS) |
-| Women's Soccer | `wsoc` | ✅ Conference Points (CPTS) |
-| Men's Basketball | `mbball` | — |
-| Women's Basketball | `wbball` | — |
-| Baseball | `summit_195` | — |
-| Softball | `summit_193` | — |
+**TAPstandings** solves this by automating the entire data gathering pipeline. Every morning, an automated bot scans official conference sites and national poll boards, cleans and standardizes the records, and outputs a single structured `data.json` file. 
 
-### 🏈 Pioneer Football League (PFL)
-| Sport | ID | Points Tracked |
-|---|---|---|
-| Football | `pfl` | — |
-
-### 🏒 National Collegiate Hockey Conference (NCHC)
-| Sport | ID | Points Tracked |
-|---|---|---|
-| Men's Ice Hockey | `mhockey` | ✅ Conference Points (PTS) |
+This data feeds directly into **Ross XPression via Datalinq / TAPbot** for on-air graphics, while also powering a web dashboard for fast visual verification by production staff before showtime.
 
 ---
 
-## What Data Is Collected
+## 🎯 What This System Does
 
-For every team in every standings table, TAPstandings pulls:
-
-- **Team Name** — Full official name (e.g., *St. Thomas*)
-- **Team Acronym** — Short-form identifier for use in Xpression (e.g., `UST`)
-- **Conference Record** — Win-Loss (or W-L-T for soccer)
-- **Overall Record** — Win-Loss (or W-L-T for soccer)
-- **Conference Points** *(where applicable)*:
-  - `CPTS` — Summit League Men's Soccer & Women's Soccer
-  - `PTS` — NCHC Men's Ice Hockey
-
-> **Note:** Conference points are only tracked for sports where they are an official tiebreaker or ranking metric: MSOC, WSOC, and NCHC Men's Ice Hockey.
+- **Eliminates Manual Stat Entry:** No more manually re-typing win-loss records, conference points, or poll movements into XPression graphics on game day.
+- **Multi-Conference Coverage:** Automatically pulls data from every conference where the Tommies compete:
+  - **Summit League** (Men's & Women's Soccer, Volleyball, Basketball, Baseball, Softball)
+  - **Pioneer Football League (PFL)** (Football)
+  - **WCHA** (Women's Ice Hockey)
+  - **NCHC** (Men's Ice Hockey)
+- **National Poll Tracking:** Scrapes weekly **USCHO Men's and Women's D-I Ice Hockey Polls**, including ranks, records, total points, first-place votes, and trend direction.
+- **Broadcast-Ready Formatting:** Team names are automatically paired with standardized on-screen acronyms (`UST`, `UND`, `SDSU`, etc.) so XPression text boxes and bug graphics populate cleanly.
+- **Fail-Safe Reliability:** If a conference website goes down, the system preserves the last good data and marks it as "stale" rather than wiping out your broadcast graphics.
 
 ---
 
-## Team Acronyms for Xpression
+## 📺 Connecting to Ross XPression (Using `data.json`)
 
-One of TAPstandings' most useful features for Xpression users is its **built-in acronym translation layer**. Every team name scraped from a conference website is automatically converted to a standardized short-form acronym, making it easy to reference teams in TAPbot prompts and workflows.
+For production and broadcast crew members setting up graphics templates in **Ross XPression Studio**:
 
-### Summit League Acronyms
-| Team | Acronym |
-|---|---|
-| University of St. Thomas | **UST** |
-| North Dakota | UND |
-| North Dakota State | NDSU |
-| South Dakota | USD |
-| South Dakota State | SDSU |
-| Kansas City | UMKC |
-| Omaha / Nebraska Omaha | OMA |
-| Oral Roberts | ORU |
-| UMass | UM |
-| Delaware | UD |
-| Northern Colorado | UNC |
-
-### Pioneer Football League Acronyms
-| Team | Acronym |
-|---|---|
-| Dayton | DAY |
-| Butler | BUT |
-| Marist | MARI |
-| Presbyterian | PC |
-| Valparaiso | VALPO |
-| San Diego | SAND |
-| Drake | DRA |
-| Davidson | DC |
-| Morehead State | MOSU |
-| Stetson | STET |
-
-### NCHC Men's Ice Hockey Acronyms
-| Team | Acronym |
-|---|---|
-| Arizona State | ASU |
-| Colorado College | CC |
-| Denver | DU |
-| Miami (OH) | MIA |
-| Minnesota Duluth | UMD |
-| North Dakota | UND |
-| Omaha | OMA |
-| St. Cloud State | SCSU |
-| St. Thomas | **UST** |
-| Western Michigan | WMU |
-
-> If a team name is not found in the translation map, the scraper automatically generates an acronym from the capitalized initials of the team name as a fallback.
+1. **Live Data Endpoint:**  
+   `https://tapbot-xpression.github.io/TAPstandings/data.json`
+2. **XPression Setup:**
+   - Open **Datalinq Server** and add a **JSON Data Source**.
+   - Point the URL to the live `data.json` link above (or use a local mirror synced via TAPbot).
+   - Link your table and text objects in XPression to the relevant sport key (e.g., `sports.msoc.rows` or `sports.uscho_mens_poll.rows`).
+3. **Data Fields Available per Row:**
+   - **Standings:** `rank`, `team`, `acronym`, `conf` (W-L or W-L-T), `ovr`, and `cpts` / `pts` (points).
+   - **Polls:** `rank`, `team`, `record`, `pts` (points & 1st-place votes), `last_poll`, `trend` (+1, -2, =), and `trend_dir` (up, down, same, new).
 
 ---
 
-## How It Works
+## 🌐 The Live Web Dashboard
 
-```
-GitHub Actions (9:00 AM daily)
-        │
-        ▼
-scraper/scrape.py
-        │
-        ├── Launches headless Chromium (Playwright)
-        ├── Visits each conference standings page
-        ├── Parses the HTML standings table
-        ├── Extracts: Team, Acronym, Conf Record, Ovr Record, Points
-        └── Writes structured output to docs/data.json
-                │
-                ▼
-        TAPbot reads data.json
-        and serves standings in Xpression
-```
+Production staff can check current data anytime from any device at:
 
-### Resilience & Stale Data Protection
+🔗 **[https://tapbot-xpression.github.io/TAPstandings/](https://tapbot-xpression.github.io/TAPstandings/)**
 
-If a conference website is temporarily unavailable or returns an error, TAPstandings does **not** wipe the existing data. Instead, it:
-
-1. Keeps the last successfully scraped data for that sport
-2. Marks it as `"status": "stale"` in the JSON
-3. Logs the error for review
-
-This ensures the Xpression bot **never goes blank** — it will always have standings to display, even if a source is temporarily down.
+### Dashboard Features:
+- **Season Filtering:** Toggle quickly between **Fall**, **Winter**, **Spring**, or **All** sports.
+- **Tommie Pride Highlight:** University of St. Thomas rows are automatically highlighted in purple across all conference tables and national polls.
+- **USCHO Poll Badges:** Shows the published date of the latest poll and color-coded movement badges (green ▲ for climbing, red ▼ for dropping, gold for NEW).
+- **Scan Status Indicators:** Green **Live** badge for fresh daily data; yellow **Stale** badge if a source website had an issue.
 
 ---
 
-## Output Format
+## 🏆 Covered Sports & Conferences
 
-Standings are written to `docs/data.json` with the following structure:
-
-```json
-{
-  "generated_at": "2026-10-25T22:53:47+00:00",
-  "sports": {
-    "msoc": {
-      "status": "ok",
-      "id": "msoc",
-      "name": "Summit League Men's Soccer",
-      "source": "https://thesummitleague.org/standings.aspx?path=msoc",
-      "updated_at": "2026-10-25T22:53:47+00:00",
-      "rows": [
-        {
-          "rank": 1,
-          "team": "Kansas City",
-          "acronym": "UMKC",
-          "conf": "4-0",
-          "ovr": "11-2-2",
-          "cpts": "12"
-        }
-      ]
-    }
-  }
-}
-```
+| Sport / Feed | Organization / League | Season | Points Tracked |
+|---|---|---|---|
+| **Women's Soccer** | Summit League | Fall | CPTS |
+| **Men's Soccer** | Summit League | Fall | CPTS |
+| **Football** | Pioneer Football League (PFL) | Fall | Conf / Overall W-L |
+| **Women's Volleyball** | Summit League | Fall | Conf / Overall W-L |
+| **Women's Ice Hockey** | WCHA | Winter | PTS |
+| **Women's DI Hockey Poll** | USCHO National Poll | Winter | Poll Pts & 1st Votes |
+| **Men's Ice Hockey** | NCHC | Winter | PTS |
+| **Men's DI Hockey Poll** | USCHO National Poll | Winter | Poll Pts & 1st Votes |
+| **Women's Basketball** | Summit League | Winter | Conf / Overall W-L |
+| **Men's Basketball** | Summit League | Winter | Conf / Overall W-L |
+| **Softball** | Summit League | Spring | Conf / Overall W-L |
+| **Baseball** | Summit League | Spring | Conf / Overall W-L |
 
 ---
 
-## Project Structure
+## ⚙️ How It Works (Under the Hood)
 
-```
-TAPstandings/
-├── .github/                  # GitHub Actions workflow (scheduled scraper)
-├── scraper/
-│   └── scrape.py             # Main scraper — fetches, parses, and writes standings
-├── docs/
-│   ├── data.json             # Live standings output (read by TAPbot)
-│   └── index.html            # Optional web view of standings
-└── requirements.txt          # Python dependencies
-```
+1. **Automated Daily Trigger:** A GitHub Actions workflow runs every morning at **9:00 AM UTC** (or can be manually triggered on demand after games).
+2. **Headless Browser Scraping:** Python using Playwright and BeautifulSoup renders live JavaScript pages on Sidearm Sports and USCHO to capture full tables.
+3. **Data Normalization:** Filters out group/pod artifacts, extracts conference vs. overall records, calculates poll trends, and maps school acronyms.
+4. **JSON Emission & Publishing:** Writes a clean `data.json` to GitHub Pages, instantly updating both XPression graphics feeds and the web interface.
 
 ---
 
-## Dependencies
+## 🚀 Running on Demand
 
-| Package | Purpose |
-|---|---|
-| `playwright` | Headless browser for rendering JavaScript-heavy standings pages |
-| `beautifulsoup4` | HTML parsing and table extraction |
+Need an instant refresh after a Friday night game without waiting for the scheduled 9 AM run?
 
-Install dependencies with:
-
-```bash
-pip install -r requirements.txt
-playwright install chromium
-```
+1. Go to the **Actions** tab in this GitHub repository.
+2. Select **Scrape Standings & Polls** from the left sidebar.
+3. Click **Run workflow** → **Run workflow**.
+4. Within 60 seconds, `data.json` and the website will reflect the newest numbers.
 
 ---
 
-## Automated Schedule
-
-The scraper runs automatically via **GitHub Actions** every morning at **9:00 AM**. No manual intervention is required. The `docs/data.json` file is updated in-place and immediately available to TAPbot in Xpression.
-
-To trigger a manual run (e.g., after a late-night game):
-1. Go to the **Actions** tab in this repository
-2. Select the standings workflow
-3. Click **Run workflow**
-
----
-
-## Built for Tommie Athletics
-
-This tool was built to support the **University of St. Thomas** athletics communications and operations teams. St. Thomas competes in the **Summit League** (most sports), the **Pioneer Football League** (football), and the **NCHC** (men's ice hockey) — and TAPstandings covers all three.
-
-
-
----
-
-*Maintained by the Casey Eakins | TAPbot-Xpression*
+*University of St. Thomas Athletics • Broadcast & Video Production • Maintained by Casey Eakins*
