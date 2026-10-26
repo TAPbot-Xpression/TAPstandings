@@ -3,271 +3,355 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Summit League, PFL & Ice Hockey Standings & Rankings</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
-  
+  <title>TAPbot - Tommie Athletics Standings</title>
   <style>
     :root {
-      --bg-primary: #0a0e17;
-      --bg-card: #111827;
-      --bg-card-header: #1a2234;
-      --border-color: #232f48;
-      --text-main: #f3f4f6;
+      --bg: #0c0d10;
+      --card-bg: #14161d;
+      --card-header: #1a1e28;
+      --border: #262c3a;
+      --text: #e2e8f0;
       --text-muted: #94a3b8;
-      --text-faint: #64748b;
-      --accent-blue: #3b82f6;
-      --accent-purple: #8b5cf6;
-      --trend-up: #10b981;
-      --trend-down: #ef4444;
-      --trend-same: #64748b;
-      --trend-new: #f59e0b;
+      --ust-purple: #510C76;
+      --ust-purple-accent: #8b2fc9;
+      --ust-highlight: rgba(139, 47, 201, 0.18);
+      --badge-ok-bg: #14532d;
+      --badge-ok-txt: #4ade80;
+      --badge-stale-bg: #713f12;
+      --badge-stale-txt: #fde047;
+      --badge-error-bg: #450a0a;
+      --badge-error-txt: #f87171;
     }
 
-    * {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
     body {
-      background-color: var(--bg-primary);
-      color: var(--text-main);
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      padding: 2rem 1.25rem;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
       min-height: 100vh;
+      padding: 2rem 1.5rem 4rem;
     }
 
+    /* Container configured for 2 side-by-side cards on desktop */
     .container {
-      max-width: 1400px;
+      max-width: 1480px;
       margin: 0 auto;
     }
 
+    /* Header */
     header {
+      text-align: center;
       margin-bottom: 2rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-end;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 1.25rem;
-      gap: 1rem;
     }
 
-    h1 {
-      font-size: 1.85rem;
+    header h1 {
+      font-size: 2.2rem;
       font-weight: 800;
-      letter-spacing: -0.025em;
-      background: linear-gradient(135deg, #60a5fa 0%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+      color: #fff;
     }
 
-    .meta-bar {
-      font-size: 0.825rem;
-      color: var(--text-muted);
-      font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Filter / Season Tabs */
-    .filter-tabs {
+    .header-links {
+      margin-top: 0.6rem;
       display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.75rem;
-      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.75rem;
     }
 
-    .tab-btn {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      color: var(--text-muted);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
+    .json-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      color: #c084fc;
+      background: rgba(139, 47, 201, 0.15);
+      border: 1px solid rgba(139, 47, 201, 0.35);
+      padding: 0.35rem 0.9rem;
+      border-radius: 999px;
       font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .json-link:hover {
+      background: rgba(139, 47, 201, 0.28);
+      color: #e9d5ff;
+      border-color: var(--ust-purple-accent);
+    }
+
+    /* Controls Bar & Filters */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      padding: 0.9rem 1.4rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .filter-btn {
+      background: #1e2433;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .tab-btn:hover {
-      border-color: var(--accent-blue);
-      color: var(--text-main);
-    }
-
-    .tab-btn.active {
-      background: var(--accent-blue);
+    .filter-btn:hover {
       color: #fff;
-      border-color: var(--accent-blue);
+      border-color: var(--ust-purple-accent);
     }
 
-    /* Grid Layout */
-    .boards-grid {
+    .filter-btn.active {
+      background: var(--ust-purple);
+      color: #fff;
+      border-color: var(--ust-purple-accent);
+      box-shadow: 0 2px 8px rgba(81, 12, 118, 0.4);
+    }
+
+    .last-generated {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    /* Grid Layout: 2 items per row on desktop */
+    .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.75rem;
     }
 
-    @media (max-width: 480px) {
-      .boards-grid {
+    @media (max-width: 960px) {
+      .grid {
         grid-template-columns: 1fr;
       }
     }
 
+    /* Card */
     .card {
-      background-color: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      width: 100%;
+    }
+
+    .card:hover {
+      border-color: #3b4254;
     }
 
     .card-header {
-      background-color: var(--bg-card-header);
-      padding: 0.85rem 1.15rem;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border-color);
+      justify-content: space-between;
+      padding: 1rem 1.3rem;
+      background: var(--card-header);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
     }
 
     .card-title {
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       font-weight: 700;
-      color: var(--text-main);
+      color: #fff;
     }
 
-    .card-badge {
-      font-size: 0.7rem;
-      font-weight: 700;
-      padding: 0.2rem 0.5rem;
-      border-radius: 4px;
+    .card-league {
+      font-size: 0.74rem;
+      font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      background: rgba(59, 130, 246, 0.15);
-      color: #60a5fa;
+      color: var(--text-muted);
     }
 
-    .card-badge.poll {
-      background: rgba(139, 92, 246, 0.15);
-      color: #c084fc;
+    .badge {
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
     }
+    .badge-ok     { background: var(--badge-ok-bg); color: var(--badge-ok-txt); }
+    .badge-stale  { background: var(--badge-stale-bg); color: var(--badge-stale-txt); }
+    .badge-error  { background: var(--badge-error-bg); color: var(--badge-error-txt); }
 
     /* Tables */
-    .table-container {
+    .table-wrap {
       width: 100%;
-      overflow-x: auto;
+      flex: 1;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.825rem;
-      text-align: left;
+      font-size: 0.88rem;
+      table-layout: auto;
     }
 
-    th {
-      background-color: rgba(0, 0, 0, 0.2);
+    thead th {
+      padding: 0.7rem 1rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
       color: var(--text-muted);
-      font-weight: 600;
-      padding: 0.6rem 0.85rem;
-      border-bottom: 1px solid var(--border-color);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      background: #11141b;
+      white-space: nowrap;
     }
 
-    td {
-      padding: 0.6rem 0.85rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-      color: var(--text-main);
+    thead th.num {
+      text-align: center;
     }
 
-    tr:last-child td {
+    tbody tr {
+      border-bottom: 1px solid #1a1e2a;
+      transition: background 0.15s;
+    }
+
+    tbody tr:last-child {
       border-bottom: none;
     }
 
-    tr:hover td {
-      background-color: rgba(255, 255, 255, 0.02);
+    tbody tr:hover {
+      background: #1c212e;
     }
 
-    .cell-center {
-      text-align: center;
-    }
-
-    .cell-right {
-      text-align: right;
-    }
-
-    .rank-cell {
-      font-family: 'JetBrains Mono', monospace;
-      font-weight: 700;
-      color: var(--text-muted);
-      width: 40px;
-    }
-
-    .rank-top3 {
-      color: #fbbf24;
-    }
-
-    .team-cell {
+    /* St. Thomas Row Highlight */
+    tbody tr.highlight-ust {
+      background: var(--ust-highlight);
       font-weight: 600;
     }
 
-    .team-cell .acronym {
-      color: var(--text-faint);
-      font-size: 0.75rem;
-      margin-left: 0.35rem;
-      font-family: 'JetBrains Mono', monospace;
+    tbody tr.highlight-ust td.team-cell .team-name {
+      color: #e9d5ff;
+      font-weight: 700;
     }
 
-    .mono-cell {
-      font-family: 'JetBrains Mono', monospace;
+    td {
+      padding: 0.65rem 1rem;
+      vertical-align: middle;
+    }
+
+    td.rank {
       color: var(--text-muted);
-    }
-
-    .pts-cell {
-      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
       font-weight: 700;
-      color: #60a5fa;
+      text-align: center;
+      width: 48px;
     }
 
-    /* Trend Indicators for Polls */
-    .trend-badge {
-      display: inline-flex;
+    td.team-cell {
+      display: flex;
       align-items: center;
-      gap: 0.2rem;
-      font-size: 0.75rem;
+      gap: 0.6rem;
+    }
+
+    .team-acronym {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.18rem 0.45rem;
+      border-radius: 4px;
+      background: #1e2433;
+      color: #cbd5e1;
+      letter-spacing: 0.04em;
+      display: inline-block;
+      text-align: center;
+      min-width: 42px;
+    }
+
+    .highlight-ust .team-acronym {
+      background: var(--ust-purple);
+      color: #fff;
+      box-shadow: 0 0 6px rgba(139, 47, 201, 0.5);
+    }
+
+    .team-name {
+      color: #f1f5f9;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    td.record {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      color: #cbd5e1;
+      white-space: nowrap;
+      width: 110px;
+    }
+
+    td.pts-col {
+      text-align: center;
+      font-variant-numeric: tabular-nums;
       font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-      padding: 0.1rem 0.35rem;
-      border-radius: 3px;
+      color: #a855f7;
+      white-space: nowrap;
+      width: 90px;
     }
 
-    .trend-up {
-      color: var(--trend-up);
-      background: rgba(16, 185, 129, 0.12);
+    .card-footer {
+      padding: 0.65rem 1.2rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #11141b;
     }
 
-    .trend-down {
-      color: var(--trend-down);
-      background: rgba(239, 68, 68, 0.12);
+    .card-footer a {
+      color: #a855f7;
+      text-decoration: none;
+      font-weight: 600;
     }
 
-    .trend-same {
-      color: var(--trend-same);
+    .card-footer a:hover {
+      text-decoration: underline;
     }
 
-    .trend-new {
-      color: var(--trend-new);
-      background: rgba(245, 158, 11, 0.12);
-    }
-
-    .loading, .empty-state {
-      padding: 3rem;
+    /* States & Messages */
+    .message {
+      padding: 2.5rem 1.5rem;
       text-align: center;
       color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .message-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+      display: block;
     }
   </style>
 </head>
@@ -275,184 +359,303 @@
 
   <div class="container">
     <header>
-      <div>
-        <h1>Collegiate Sports & Rankings Hub</h1>
-        <div class="meta-bar" id="lastUpdated">Loading data...</div>
-      </div>
-      <div class="filter-tabs">
-        <button class="tab-btn active" onclick="filterBoards('all')">All</button>
-        <button class="tab-btn" onclick="filterBoards('polls')">USCHO Polls</button>
-        <button class="tab-btn" onclick="filterBoards('hockey')">Ice Hockey</button>
-        <button class="tab-btn" onclick="filterBoards('summit')">Summit League</button>
+      <h1>TAPbot - Tommie Athletics Standings</h1>
+      <div class="header-links">
+        <a href="data.json" target="_blank" rel="noopener" class="json-link">
+          📄 View Raw JSON (data.json)
+        </a>
       </div>
     </header>
 
-    <div id="boardsContainer" class="boards-grid">
-      <div class="loading">Loading standings & polls data...</div>
+    <div class="controls">
+      <div class="filter-group" id="filter-buttons">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="fall">Fall Sports</button>
+        <button class="filter-btn" data-filter="winter">Winter Sports</button>
+        <button class="filter-btn" data-filter="spring">Spring Sports</button>
+      </div>
+      <div class="last-generated" id="last-generated-time">Loading feed…</div>
+    </div>
+
+    <div class="grid" id="sports-grid">
+      <div class="card" style="grid-column: 1 / -1;">
+        <div class="message">
+          <span class="message-icon">⏳</span>
+          Loading live standings and polls from data.json…
+        </div>
+      </div>
     </div>
   </div>
 
   <script>
-    let globalData = null;
-    let currentFilter = 'all';
+    let sportsData = {};
+    let activeFilter = "all";
+
+    // Ordering definition: ensures winter sports place polls directly below their conference tables
+    const DISPLAY_ORDER = [
+      // Fall
+      "wsoc",
+      "msoc",
+      "pfl",
+      "wvball",
+      // Winter (Standings paired immediately with their national polls)
+      "whockey",
+      "uscho_womens_poll",
+      "mhockey",
+      "uscho_mens_poll",
+      "wbball",
+      "mbball",
+      // Spring
+      "summit_193",
+      "summit_195"
+    ];
+
+    // Season category mapping
+    const SEASON_MAP = {
+      // Fall
+      wsoc: "fall",
+      msoc: "fall",
+      pfl: "fall",
+      wvball: "fall",
+      // Winter
+      whockey: "winter",
+      uscho_womens_poll: "winter",
+      mhockey: "winter",
+      uscho_mens_poll: "winter",
+      wbball: "winter",
+      mbball: "winter",
+      // Spring
+      summit_193: "spring",
+      summit_195: "spring"
+    };
 
     async function loadData() {
+      const grid = document.getElementById("sports-grid");
+      const metaTime = document.getElementById("last-generated-time");
+
       try {
-        const res = await fetch('data.json?t=' + Date.now());
-        if (!res.ok) throw new Error('Failed to load data.json');
-        globalData = await res.json();
-        
-        document.getElementById('lastUpdated').textContent = 
-          'Last Updated: ' + new Date(globalData.generated_at).toLocaleString();
-        
-        render();
+        const res = await fetch("data.json?_=" + Date.now());
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+
+        sportsData = data.sports || {};
+
+        if (data.generated_at) {
+          const genDate = new Date(data.generated_at);
+          metaTime.textContent = "Feed updated: " + genDate.toLocaleString(undefined, {
+            month: "short", day: "numeric", hour: "numeric", minute: "2-digit", timeZoneName: "short"
+          });
+        } else {
+          metaTime.textContent = "Feed loaded";
+        }
+
+        renderGrid();
       } catch (err) {
-        document.getElementById('boardsContainer').innerHTML = `
-          <div class="empty-state">
-            <p style="color: #ef4444; font-weight:600;">Error loading standings: ${err.message}</p>
-            <p style="margin-top: 0.5rem; font-size:0.85rem;">Run the scraper script to generate data.json.</p>
+        grid.innerHTML = `
+          <div class="card" style="grid-column: 1 / -1;">
+            <div class="message">
+              <span class="message-icon">⚠️</span>
+              Could not load feed: ${err.message}<br/>
+              <small style="color:#64748b; margin-top:0.5rem; display:block;">Ensure data.json is in the docs/ directory.</small>
+            </div>
           </div>
         `;
+        metaTime.textContent = "Connection error";
       }
     }
 
-    function filterBoards(filter) {
-      currentFilter = filter;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      event.target.classList.add('active');
-      render();
+    function getSeasonCategory(sportId) {
+      return SEASON_MAP[sportId] || "other";
     }
 
-    function render() {
-      if (!globalData || !globalData.sports) return;
+    function renderGrid() {
+      const grid = document.getElementById("sports-grid");
+      
+      // Collect entries according to custom DISPLAY_ORDER, followed by any additional keys
+      const knownKeys = DISPLAY_ORDER.filter(id => sportsData[id]);
+      const remainingKeys = Object.keys(sportsData).filter(id => !DISPLAY_ORDER.includes(id));
+      const sortedKeys = [...knownKeys, ...remainingKeys];
 
-      const container = document.getElementById('boardsContainer');
-      container.innerHTML = '';
-
-      const sports = Object.values(globalData.sports);
-
-      const filtered = sports.filter(s => {
-        if (currentFilter === 'all') return true;
-        if (currentFilter === 'polls') return s.id.includes('poll');
-        if (currentFilter === 'hockey') return s.id.includes('hockey');
-        if (currentFilter === 'summit') return s.id.includes('summit') || ['wsoc','msoc','wvball','wbball','mbball'].includes(s.id);
-        return true;
-      });
-
-      if (filtered.length === 0) {
-        container.innerHTML = '<div class="empty-state">No boards found for selected filter.</div>';
+      if (sortedKeys.length === 0) {
+        grid.innerHTML = `
+          <div class="card" style="grid-column: 1 / -1;">
+            <div class="message">No sport standings or polls available in feed.</div>
+          </div>
+        `;
         return;
       }
 
-      filtered.forEach(sport => {
-        const isPoll = sport.id.includes('poll');
-        const card = document.createElement('div');
-        card.className = 'card';
+      const filtered = sortedKeys.filter(id => {
+        if (activeFilter === "all") return true;
+        return getSeasonCategory(id) === activeFilter;
+      });
 
-        let tableHeaderHtml = '';
-        if (isPoll) {
-          tableHeaderHtml = `
-            <thead>
-              <tr>
-                <th class="cell-center">#</th>
-                <th>Team</th>
-                <th class="cell-center">Record</th>
-                <th class="cell-right">Pts (1st)</th>
-                <th class="cell-center">Last</th>
-                <th class="cell-center">Chg</th>
-              </tr>
-            </thead>
-          `;
-        } else {
-          const hasCpts = sport.rows && sport.rows.some(r => r.cpts !== undefined);
-          const hasPts = sport.rows && sport.rows.some(r => r.pts !== undefined);
-          
-          tableHeaderHtml = `
-            <thead>
-              <tr>
-                <th class="cell-center">#</th>
-                <th>Team</th>
-                <th class="cell-center">Conf</th>
-                <th class="cell-center">Ovr</th>
-                ${hasCpts ? '<th class="cell-right">CPTS</th>' : ''}
-                ${hasPts ? '<th class="cell-right">PTS</th>' : ''}
-              </tr>
-            </thead>
-          `;
-        }
-
-        let tableRowsHtml = '';
-        if (sport.rows && sport.rows.length > 0) {
-          tableRowsHtml = sport.rows.map((row, idx) => {
-            const rankClass = row.rank <= 3 ? 'rank-cell rank-top3' : 'rank-cell';
-
-            if (isPoll) {
-              let trendClass = 'trend-same';
-              let trendSymbol = row.trend;
-              if (row.trend_dir === 'up') {
-                trendClass = 'trend-up';
-                trendSymbol = '▲ ' + row.trend.replace('+', '');
-              } else if (row.trend_dir === 'down') {
-                trendClass = 'trend-down';
-                trendSymbol = '▼ ' + row.trend.replace('-', '');
-              } else if (row.trend_dir === 'new') {
-                trendClass = 'trend-new';
-                trendSymbol = 'NEW';
-              }
-
-              return `
-                <tr>
-                  <td class="${rankClass} cell-center">${row.rank}</td>
-                  <td class="team-cell">${row.team}</td>
-                  <td class="mono-cell cell-center">${row.record || '—'}</td>
-                  <td class="pts-cell cell-right">${row.pts}</td>
-                  <td class="mono-cell cell-center">${row.last_poll || 'NR'}</td>
-                  <td class="cell-center">
-                    <span class="trend-badge ${trendClass}">${trendSymbol}</span>
-                  </td>
-                </tr>
-              `;
-            } else {
-              return `
-                <tr>
-                  <td class="${rankClass} cell-center">${row.rank || (idx + 1)}</td>
-                  <td class="team-cell">
-                    ${row.team}
-                    ${row.acronym ? `<span class="acronym">${row.acronym}</span>` : ''}
-                  </td>
-                  <td class="mono-cell cell-center">${row.conf || '—'}</td>
-                  <td class="mono-cell cell-center">${row.ovr || '—'}</td>
-                  ${row.cpts !== undefined ? `<td class="pts-cell cell-right">${row.cpts}</td>` : ''}
-                  ${row.pts !== undefined ? `<td class="pts-cell cell-right">${row.pts}</td>` : ''}
-                </tr>
-              `;
-            }
-          }).join('');
-        } else {
-          tableRowsHtml = `<tr><td colspan="6" class="cell-center mono-cell" style="padding: 1.5rem;">No data available</td></tr>`;
-        }
-
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="card-title">${sport.name}</span>
-            <span class="card-badge ${isPoll ? 'poll' : ''}">${isPoll ? 'USCHO Top 20' : 'Standings'}</span>
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="card" style="grid-column: 1 / -1;">
+            <div class="message">No tables found for this season filter.</div>
           </div>
-          <div class="table-container">
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(id => buildCard(id, sportsData[id])).join("");
+    }
+
+    function buildCard(id, s) {
+      const isError = s.status === "error" || !s.rows || s.rows.length === 0;
+      const isStale = s.status === "stale";
+      const isPoll = id.includes("poll") || s.type === "poll";
+
+      let badgeClass = "badge-ok";
+      let badgeText = isPoll ? "National Poll" : "Live";
+
+      if (isError) {
+        badgeClass = "badge-error";
+        badgeText = "Off Season / Error";
+      } else if (isStale) {
+        badgeClass = "badge-stale";
+        badgeText = "⚠ Stale";
+      }
+
+      let bodyContent = "";
+
+      if (isError) {
+        const errorMsg = s.error || "No current active data found.";
+        bodyContent = `
+          <div class="message">
+            <span class="message-icon">📋</span>
+            ${escHtml(errorMsg)}
+          </div>
+        `;
+      } else if (isPoll) {
+        // Table layout for USCHO National Polls (Rank, Team, Record, Points/FPV)
+        bodyContent = `
+          <div class="table-wrap">
             <table>
-              ${tableHeaderHtml}
+              <thead>
+                <tr>
+                  <th class="num">#</th>
+                  <th>Team</th>
+                  <th class="num">Record</th>
+                  <th class="num pts-col">Pts (1st)</th>
+                </tr>
+              </thead>
               <tbody>
-                ${tableRowsHtml}
+                ${s.rows.map(r => {
+                  const isUST = r.team && r.team.toLowerCase().includes("st. thomas");
+                  return `
+                    <tr class="${isUST ? 'highlight-ust' : ''}">
+                      <td class="rank">${r.rank}</td>
+                      <td>
+                        <div class="team-cell">
+                          <span class="team-name">${escHtml(r.team)}</span>
+                        </div>
+                      </td>
+                      <td class="record">${escHtml(r.record)}</td>
+                      <td class="pts-col">${escHtml(r.pts)}</td>
+                    </tr>
+                  `;
+                }).join("")}
               </tbody>
             </table>
           </div>
         `;
+      } else {
+        // Table layout for Conference Standings (Rank, Team + Acronym, Conf, Overall, CPTS/PTS)
+        const hasCpts = s.rows && s.rows.some(r => r.cpts !== undefined);
+        const hasPts  = s.rows && s.rows.some(r => r.pts !== undefined);
+        const ptsHeader = hasCpts ? "CPTS" : (hasPts ? "PTS" : null);
 
-        container.appendChild(card);
-      });
+        bodyContent = `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">#</th>
+                  <th>Team</th>
+                  <th class="num">Conf</th>
+                  <th class="num">Overall</th>
+                  ${ptsHeader ? `<th class="num pts-col">${ptsHeader}</th>` : ""}
+                </tr>
+              </thead>
+              <tbody>
+                ${s.rows.map(r => {
+                  const isUST = r.acronym === "UST" || (r.team && r.team.toLowerCase().includes("st. thomas"));
+                  const ptsVal = hasCpts ? (r.cpts ?? "—") : (hasPts ? (r.pts ?? "—") : null);
+
+                  return `
+                    <tr class="${isUST ? 'highlight-ust' : ''}">
+                      <td class="rank">${r.rank}</td>
+                      <td>
+                        <div class="team-cell">
+                          <span class="team-acronym">${escHtml(r.acronym || '—')}</span>
+                          <span class="team-name">${escHtml(r.team)}</span>
+                        </div>
+                      </td>
+                      <td class="record">${escHtml(r.conf)}</td>
+                      <td class="record">${escHtml(r.ovr)}</td>
+                      ${ptsHeader ? `<td class="pts-col">${escHtml(ptsVal)}</td>` : ""}
+                    </tr>
+                  `;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      const sourceLinkText = isPoll ? "Official USCHO Poll ↗" : "Official Standings ↗";
+      const sourceLink = s.source ? `<a href="${escHtml(s.source)}" target="_blank" rel="noopener">${sourceLinkText}</a>` : `<span></span>`;
+      const updatedTime = s.updated_at ? new Date(s.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+
+      return `
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="card-league">${escHtml(getLeagueLabel(id))}</div>
+              <h2 class="card-title">${escHtml(s.name || id)}</h2>
+            </div>
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </div>
+          ${bodyContent}
+          <div class="card-footer">
+            ${sourceLink}
+            <span>${updatedTime ? 'Scanned ' + updatedTime : ''}</span>
+          </div>
+        </div>
+      `;
     }
 
-    // Auto-fetch on boot
+    function getLeagueLabel(id) {
+      if (id === "pfl") return "Pioneer Football League";
+      if (id === "mhockey") return "NCHC Men's Ice Hockey";
+      if (id === "whockey") return "WCHA Women's Ice Hockey";
+      if (id === "uscho_mens_poll") return "National Ranking • USCHO";
+      if (id === "uscho_womens_poll") return "National Ranking • USCHO";
+      return "Summit League";
+    }
+
+    function escHtml(str) {
+      return String(str ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Filter button handlers
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        activeFilter = btn.dataset.filter;
+        renderGrid();
+      });
+    });
+
     loadData();
   </script>
+
 </body>
 </html>
