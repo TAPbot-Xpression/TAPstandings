@@ -27,7 +27,7 @@ from bs4 import BeautifulSoup
 
 UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 
-# ── Team Acronym Translation Map (for Standings) ──────────────────────────────
+# ── Team Acronym Translation Map (for Standings & Polls) ──────────────────────
 TEAM_ACRONYMS = {
     # ── Summit League ─────────────────────────────────────────────────────────
     "North Dakota":             "UND",
@@ -71,12 +71,24 @@ TEAM_ACRONYMS = {
     "St. Cloud State":          "SCSU",
     "Western Michigan":         "WMU",
 
-    # ── WCHA Women's Ice Hockey ───────────────────────────────────────────────
+    # ── Default Fallbacks for Other Ice Hockey Programs ───────────────────────
     "Ohio State":               "OSU",
     "Minnesota":                "MINN",
     "Wisconsin":                "WIS",
     "Bemidji State":            "BSU",
     "Minnesota State":          "MSU",
+}
+
+# ── WCHA-Specific Acronym Overrides (Applies ONLY to WCHA Standings) ──────────
+WCHA_TEAM_ACRONYMS = {
+    "Ohio State":       "OHIOST",
+    "Minnesota":        "MINNES",
+    "St. Cloud State":  "STCLOU",
+    "Minnesota Duluth": "MNDULU",
+    "St. Thomas":       "STTHMN",
+    "Wisconsin":        "WISC",
+    "Bemidji State":    "BEMIDJI",
+    "Minnesota State":  "MNSTMK",
 }
 
 # ── Target Configuration ──────────────────────────────────────────────────────
@@ -122,6 +134,7 @@ FEEDS_CONFIG = [
         "url": "https://wcha.com/standings.aspx?path=whockey",
         "point_col": "pts",
         "skip_pods": False,
+        "acronym_overrides": WCHA_TEAM_ACRONYMS,
     },
     {
         "id": "uscho_womens_poll",
@@ -184,19 +197,20 @@ FEEDS_CONFIG = [
 def clean(text):
     return re.sub(r"\s+", " ", text or "").strip()
 
-def get_team_acronym(team_name):
-    """Translate raw team name into standard acronym."""
+def get_team_acronym(team_name, overrides=None):
+    """Translate raw team name into standard acronym with optional feed overrides."""
     cleaned = clean(team_name)
+    active_map = {**TEAM_ACRONYMS, **(overrides or {})}
 
-    if cleaned in TEAM_ACRONYMS:
-        return TEAM_ACRONYMS[cleaned]
+    if cleaned in active_map:
+        return active_map[cleaned]
 
     cleaned_lower = cleaned.lower()
-    for full_name, acronym in TEAM_ACRONYMS.items():
+    for full_name, acronym in active_map.items():
         if full_name.lower() == cleaned_lower:
             return acronym
 
-    for full_name, acronym in TEAM_ACRONYMS.items():
+    for full_name, acronym in active_map.items():
         if full_name.lower() in cleaned_lower:
             return acronym
 
@@ -236,6 +250,7 @@ def parse_standings_table(html, meta):
     soup = BeautifulSoup(html, "html.parser")
     point_col_type = meta.get("point_col")
     skip_pods      = meta.get("skip_pods", False)
+    overrides      = meta.get("acronym_overrides", None)
 
     target = None
 
@@ -321,7 +336,7 @@ def parse_standings_table(html, meta):
         if not team or team.lower() in ("team", "school", "member", "institution") or team.lower().startswith("pod"):
             continue
 
-        acronym = get_team_acronym(team)
+        acronym = get_team_acronym(team, overrides=overrides)
 
         if conf_combined is not None:
             conf = cell_text(conf_combined).replace("–", "-") or "0-0"
