@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-26T00:24:48+00:00",
+  "generated_at": "2026-10-26T00:53:46+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -88,7 +88,7 @@
           "cpts": "5"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -145,7 +145,7 @@
           "cpts": "2"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -231,7 +231,7 @@
           "ovr": "1-7"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -296,7 +296,7 @@
           "ovr": "6-13"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -369,7 +369,106 @@
           "pts": "0"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
+    },
+    "uscho_womens_poll": {
+      "status": "ok",
+      "id": "uscho_womens_poll",
+      "name": "USCHO Women's Division I Ice Hockey Poll",
+      "source": "https://www.uscho.com/rankings/d-i-womens-poll",
+      "rows": [
+        {
+          "rank": 1,
+          "team": "Ohio State",
+          "pts": "298 (18)",
+          "record": "7-1-0"
+        },
+        {
+          "rank": 2,
+          "team": "Minnesota",
+          "pts": "275 (1)",
+          "record": "5-1-0"
+        },
+        {
+          "rank": 3,
+          "team": "Wisconsin",
+          "pts": "267 (1)",
+          "record": "6-2-0"
+        },
+        {
+          "rank": 4,
+          "team": "Northeastern",
+          "pts": "221",
+          "record": "3-1-1"
+        },
+        {
+          "rank": 5,
+          "team": "Quinnipiac",
+          "pts": "206",
+          "record": "5-1-1"
+        },
+        {
+          "rank": 6,
+          "team": "Penn State",
+          "pts": "178",
+          "record": "5-3-0"
+        },
+        {
+          "rank": 7,
+          "team": "Princeton",
+          "pts": "175",
+          "record": "2-0-0"
+        },
+        {
+          "rank": 8,
+          "team": "Colgate",
+          "pts": "154",
+          "record": "6-0-0"
+        },
+        {
+          "rank": 9,
+          "team": "St. Cloud State",
+          "pts": "116",
+          "record": "6-2-0"
+        },
+        {
+          "rank": 10,
+          "team": "Clarkson",
+          "pts": "112",
+          "record": "6-2-0"
+        },
+        {
+          "rank": 11,
+          "team": "Connecticut",
+          "pts": "111",
+          "record": "2-4-0"
+        },
+        {
+          "rank": 12,
+          "team": "Cornell",
+          "pts": "101",
+          "record": "2-0-0"
+        },
+        {
+          "rank": 13,
+          "team": "Minnesota Duluth",
+          "pts": "91",
+          "record": "6-2-0"
+        },
+        {
+          "rank": 14,
+          "team": "Yale",
+          "pts": "36",
+          "record": "0-0-0"
+        },
+        {
+          "rank": 15,
+          "team": "Vermont",
+          "pts": "30",
+          "record": "3-3-0"
+        }
+      ],
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -458,72 +557,136 @@
           "pts": "0"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
-    "mbball": {
+    "uscho_mens_poll": {
       "status": "ok",
-      "id": "mbball",
-      "name": "Summit League Men's Basketball",
-      "source": "https://thesummitleague.org/standings.aspx?path=mbball",
+      "id": "uscho_mens_poll",
+      "name": "USCHO Men's Division I Ice Hockey Poll",
+      "source": "https://www.uscho.com/rankings/d-i-mens-poll",
       "rows": [
         {
           "rank": 1,
-          "team": "Kansas City",
-          "acronym": "UMKC",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "Michigan",
+          "pts": "992 (47)",
+          "record": "6-0-0"
         },
         {
           "rank": 2,
-          "team": "North Dakota",
-          "acronym": "UND",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "Michigan State",
+          "pts": "924 (2)",
+          "record": "3-0-0"
         },
         {
           "rank": 3,
-          "team": "North Dakota State",
-          "acronym": "NDSU",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "North Dakota",
+          "pts": "890",
+          "record": "4-0-0"
         },
         {
           "rank": 4,
-          "team": "Omaha",
-          "acronym": "OMA",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "Denver",
+          "pts": "797",
+          "record": "2-2-0"
         },
         {
           "rank": 5,
-          "team": "Oral Roberts",
-          "acronym": "ORU",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "Western Michigan",
+          "pts": "795 (1)",
+          "record": "4-0-0"
         },
         {
           "rank": 6,
-          "team": "South Dakota",
-          "acronym": "USD",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "Wisconsin",
+          "pts": "772",
+          "record": "4-0-0"
         },
         {
           "rank": 7,
-          "team": "South Dakota State",
-          "acronym": "SDSU",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "Providence",
+          "pts": "676",
+          "record": "3-0-0"
         },
         {
           "rank": 8,
-          "team": "St. Thomas",
-          "acronym": "UST",
-          "conf": "0-0",
-          "ovr": "0-0"
+          "team": "Quinnipiac",
+          "pts": "673",
+          "record": "4-1-0"
+        },
+        {
+          "rank": 9,
+          "team": "Minnesota Duluth",
+          "pts": "602",
+          "record": "3-1-2"
+        },
+        {
+          "rank": 10,
+          "team": "Dartmouth",
+          "pts": "487",
+          "record": "0-0-0"
+        },
+        {
+          "rank": 11,
+          "team": "Michigan Tech",
+          "pts": "454",
+          "record": "5-1-0"
+        },
+        {
+          "rank": 12,
+          "team": "Colorado College",
+          "pts": "435",
+          "record": "3-1-0"
+        },
+        {
+          "rank": 13,
+          "team": "Augustana",
+          "pts": "360",
+          "record": "3-0-1"
+        },
+        {
+          "rank": 14,
+          "team": "Cornell",
+          "pts": "345",
+          "record": "0-0-0"
+        },
+        {
+          "rank": 15,
+          "team": "Boston University",
+          "pts": "323",
+          "record": "3-1-0"
+        },
+        {
+          "rank": 16,
+          "team": "Connecticut",
+          "pts": "208",
+          "record": "2-2-0"
+        },
+        {
+          "rank": 17,
+          "team": "Northeastern",
+          "pts": "123",
+          "record": "2-1-0"
+        },
+        {
+          "rank": 18,
+          "team": "Boston College",
+          "pts": "117",
+          "record": "1-2-0"
+        },
+        {
+          "rank": 19,
+          "team": "Massachusetts",
+          "pts": "102",
+          "record": "2-3-1"
+        },
+        {
+          "rank": 20,
+          "team": "Merrimack",
+          "pts": "100",
+          "record": "2-1-1"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -588,7 +751,72 @@
           "ovr": "0-0"
         }
       ],
-      "updated_at": "2026-10-26T00:24:48+00:00"
+      "updated_at": "2026-10-26T00:53:46+00:00"
+    },
+    "mbball": {
+      "status": "ok",
+      "id": "mbball",
+      "name": "Summit League Men's Basketball",
+      "source": "https://thesummitleague.org/standings.aspx?path=mbball",
+      "rows": [
+        {
+          "rank": 1,
+          "team": "Kansas City",
+          "acronym": "UMKC",
+          "conf": "0-0",
+          "ovr": "0-0"
+        },
+        {
+          "rank": 2,
+          "team": "North Dakota",
+          "acronym": "UND",
+          "conf": "0-0",
+          "ovr": "0-0"
+        },
+        {
+          "rank": 3,
+          "team": "North Dakota State",
+          "acronym": "NDSU",
+          "conf": "0-0",
+          "ovr": "0-0"
+        },
+        {
+          "rank": 4,
+          "team": "Omaha",
+          "acronym": "OMA",
+          "conf": "0-0",
+          "ovr": "0-0"
+        },
+        {
+          "rank": 5,
+          "team": "Oral Roberts",
+          "acronym": "ORU",
+          "conf": "0-0",
+          "ovr": "0-0"
+        },
+        {
+          "rank": 6,
+          "team": "South Dakota",
+          "acronym": "USD",
+          "conf": "0-0",
+          "ovr": "0-0"
+        },
+        {
+          "rank": 7,
+          "team": "South Dakota State",
+          "acronym": "SDSU",
+          "conf": "0-0",
+          "ovr": "0-0"
+        },
+        {
+          "rank": 8,
+          "team": "St. Thomas",
+          "acronym": "UST",
+          "conf": "0-0",
+          "ovr": "0-0"
+        }
+      ],
+      "updated_at": "2026-10-26T00:53:46+00:00"
     },
     "summit_193": {
       "status": "error",
@@ -598,16 +826,6 @@
     "summit_195": {
       "status": "error",
       "error": "No team rows parsed for Summit League Baseball",
-      "rows": []
-    },
-    "uscho_mens_poll": {
-      "status": "error",
-      "error": "Could not find USCHO poll table for USCHO Men's Division I Ice Hockey Poll",
-      "rows": []
-    },
-    "uscho_womens_poll": {
-      "status": "error",
-      "error": "Could not find USCHO poll table for USCHO Women's Division I Ice Hockey Poll",
       "rows": []
     }
   }
