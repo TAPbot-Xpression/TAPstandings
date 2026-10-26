@@ -78,7 +78,7 @@ Production staff can check current data anytime from any device at:
 
 ## ⚙️ How It Works (Under the Hood)
 
-1. **Automated Daily Trigger:** A GitHub Actions workflow runs every morning at **9:00 AM UTC** (or can be manually triggered on demand after games).
+1. **Automated Daily Trigger:** A GitHub Actions workflow runs every day at **9:00 AM UTC**, **12:00 PM UTC**, and **4:00 PM UTC**  (or can be manually triggered on demand after games).
 2. **Headless Browser Scraping:** Python using Playwright and BeautifulSoup renders live JavaScript pages on Sidearm Sports and USCHO to capture full tables.
 3. **Data Normalization:** Filters out group/pod artifacts, extracts conference vs. overall records, calculates poll trends, and maps school acronyms.
 4. **JSON Emission & Publishing:** Writes a clean `data.json` to GitHub Pages, instantly updating both XPression graphics feeds and the web interface.
