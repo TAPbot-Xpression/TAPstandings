@@ -352,6 +352,16 @@ def parse_standings_table(html, meta):
 
         rows.append(row_data)
 
+    # Sort descending by points if sport tracks them
+    if point_col_type == "cpts":
+        rows.sort(key=lambda r: int(r.get("cpts", 0) or 0), reverse=True)
+        for i, row in enumerate(rows, 1):
+            row["rank"] = i
+    elif point_col_type == "pts":
+        rows.sort(key=lambda r: int(r.get("pts", 0) or 0), reverse=True)
+        for i, row in enumerate(rows, 1):
+            row["rank"] = i
+
     if not rows:
         raise ValueError(f"No team rows parsed for {meta['name']}")
 
