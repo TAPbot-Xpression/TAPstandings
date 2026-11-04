@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-03T21:31:53+00:00",
+  "generated_at": "2026-11-04T14:50:41+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -215,7 +215,7 @@
           "ovr": "1-8"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -280,7 +280,7 @@
           "ovr": "6-15"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -353,7 +353,7 @@
           "pts": "0"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
@@ -498,7 +498,7 @@
           "trend_dir": "same"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -587,7 +587,7 @@
           "pts": "0"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
@@ -777,7 +777,7 @@
           "trend_dir": "down"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -801,29 +801,29 @@
         },
         {
           "rank": 3,
-          "team": "Omaha",
-          "acronym": "OMA",
-          "conf": "0-0",
-          "ovr": "0-0"
-        },
-        {
-          "rank": 4,
-          "team": "Oral Roberts",
-          "acronym": "ORU",
-          "conf": "0-0",
-          "ovr": "0-0"
-        },
-        {
-          "rank": 5,
           "team": "North Dakota",
           "acronym": "UND",
           "conf": "0-0",
           "ovr": "0-1"
         },
         {
-          "rank": 6,
+          "rank": 4,
           "team": "North Dakota State",
           "acronym": "NDSU",
+          "conf": "0-0",
+          "ovr": "0-1"
+        },
+        {
+          "rank": 5,
+          "team": "Omaha",
+          "acronym": "OMA",
+          "conf": "0-0",
+          "ovr": "0-1"
+        },
+        {
+          "rank": 6,
+          "team": "Oral Roberts",
+          "acronym": "ORU",
           "conf": "0-0",
           "ovr": "0-1"
         },
@@ -842,7 +842,7 @@
           "ovr": "0-1"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -873,17 +873,17 @@
         },
         {
           "rank": 4,
-          "team": "St. Thomas",
-          "acronym": "UST",
+          "team": "South Dakota State",
+          "acronym": "SDSU",
           "conf": "0-0",
           "ovr": "1-0"
         },
         {
           "rank": 5,
-          "team": "South Dakota State",
-          "acronym": "SDSU",
+          "team": "St. Thomas",
+          "acronym": "UST",
           "conf": "0-0",
-          "ovr": "0-0"
+          "ovr": "1-0"
         },
         {
           "rank": 6,
@@ -907,7 +907,7 @@
           "ovr": "0-1"
         }
       ],
-      "updated_at": "2026-11-03T21:31:53+00:00"
+      "updated_at": "2026-11-04T14:50:41+00:00"
     },
     "summit_193": {
       "status": "error",
