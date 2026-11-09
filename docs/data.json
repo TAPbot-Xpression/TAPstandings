@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-09T14:47:44+00:00",
+  "generated_at": "2026-11-09T17:46:02+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -215,7 +215,7 @@
           "ovr": "1-9"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -280,7 +280,7 @@
           "ovr": "6-17"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -353,14 +353,14 @@
           "pts": "0"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
       "id": "uscho_womens_poll",
       "name": "USCHO Women's Division I Ice Hockey Poll",
       "source": "https://www.uscho.com/rankings/d-i-womens-poll",
-      "poll_date": "November 2, 2026",
+      "poll_date": "November 9, 2026",
       "rows": [
         {
           "rank": 1,
@@ -375,7 +375,7 @@
           "rank": 2,
           "team": "Minnesota",
           "record": "9-1-0",
-          "pts": "276",
+          "pts": "277",
           "last_poll": "2",
           "trend": "=",
           "trend_dir": "same"
@@ -384,43 +384,43 @@
           "rank": 3,
           "team": "Wisconsin",
           "record": "8-2-0",
-          "pts": "263",
+          "pts": "262",
           "last_poll": "3",
           "trend": "=",
           "trend_dir": "same"
         },
         {
           "rank": 4,
-          "team": "Northeastern",
-          "record": "7-1-1",
-          "pts": "232",
-          "last_poll": "4",
-          "trend": "=",
-          "trend_dir": "same"
-        },
-        {
-          "rank": 5,
           "team": "Princeton",
-          "record": "6-0-0",
-          "pts": "210",
-          "last_poll": "6",
+          "record": "8-0-0",
+          "pts": "231",
+          "last_poll": "5",
           "trend": "+1",
           "trend_dir": "up"
         },
         {
-          "rank": 6,
-          "team": "Quinnipiac",
-          "record": "8-2-1",
-          "pts": "183",
-          "last_poll": "5",
+          "rank": 5,
+          "team": "Northeastern",
+          "record": "8-1-2",
+          "pts": "216",
+          "last_poll": "4",
           "trend": "-1",
           "trend_dir": "down"
+        },
+        {
+          "rank": 6,
+          "team": "Quinnipiac",
+          "record": "10-2-1",
+          "pts": "210",
+          "last_poll": "6",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 7,
           "team": "Penn State",
           "record": "9-3-0",
-          "pts": "163",
+          "pts": "173",
           "last_poll": "7",
           "trend": "=",
           "trend_dir": "same"
@@ -428,53 +428,53 @@
         {
           "rank": 8,
           "team": "Colgate",
-          "record": "8-2-0",
-          "pts": "153",
+          "record": "8-4-0",
+          "pts": "126",
           "last_poll": "8",
           "trend": "=",
           "trend_dir": "same"
         },
         {
           "rank": 9,
-          "team": "Clarkson",
-          "record": "10-2-0",
-          "pts": "129",
+          "team": "St. Cloud State",
+          "record": "8-4-0",
+          "pts": "124",
           "last_poll": "10",
           "trend": "+1",
           "trend_dir": "up"
         },
         {
           "rank": 10,
-          "team": "St. Cloud State",
-          "record": "8-4-0",
-          "pts": "117",
+          "team": "Clarkson",
+          "record": "11-3-0",
+          "pts": "112",
           "last_poll": "9",
           "trend": "-1",
           "trend_dir": "down"
         },
         {
           "rank": 11,
-          "team": "Yale",
-          "record": "2-1-1",
-          "pts": "116",
-          "last_poll": "14",
-          "trend": "+3",
+          "team": "Connecticut",
+          "record": "6-4-2",
+          "pts": "99",
+          "last_poll": "13",
+          "trend": "+2",
           "trend_dir": "up"
         },
         {
-          "rank": 12,
+          "rank": 11,
           "team": "Minnesota Duluth",
           "record": "6-4-0",
-          "pts": "89",
-          "last_poll": "13",
+          "pts": "99",
+          "last_poll": "12",
           "trend": "+1",
           "trend_dir": "up"
         },
         {
           "rank": 13,
-          "team": "Connecticut",
-          "record": "4-4-2",
-          "pts": "76",
+          "team": "Yale",
+          "record": "3-2-1",
+          "pts": "80",
           "last_poll": "11",
           "trend": "-2",
           "trend_dir": "down"
@@ -482,23 +482,23 @@
         {
           "rank": 14,
           "team": "Cornell",
-          "record": "4-2-0",
-          "pts": "54",
-          "last_poll": "12",
-          "trend": "-2",
-          "trend_dir": "down"
+          "record": "4-4-0",
+          "pts": "49",
+          "last_poll": "14",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 15,
           "team": "Boston College",
-          "record": "6-3-0",
-          "pts": "28",
+          "record": "6-5-0",
+          "pts": "22",
           "last_poll": "15",
           "trend": "=",
           "trend_dir": "same"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -587,197 +587,197 @@
           "pts": "2"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
       "id": "uscho_mens_poll",
       "name": "USCHO Men's Division I Ice Hockey Poll",
       "source": "https://www.uscho.com/rankings/d-i-mens-poll",
-      "poll_date": "November 2, 2026",
+      "poll_date": "November 9, 2026",
       "rows": [
         {
           "rank": 1,
           "team": "Wisconsin",
-          "record": "6-0-0",
-          "pts": "979 (37)",
-          "last_poll": "2",
-          "trend": "+1",
-          "trend_dir": "up"
+          "record": "7-0-1",
+          "pts": "992 (44)",
+          "last_poll": "1",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 2,
           "team": "Michigan",
           "record": "8-1-0",
-          "pts": "922 (9)",
-          "last_poll": "1",
-          "trend": "-1",
-          "trend_dir": "down"
+          "pts": "946 (6)",
+          "last_poll": "2",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 3,
-          "team": "Michigan State",
-          "record": "5-1-0",
-          "pts": "897 (3)",
+          "team": "Denver",
+          "record": "7-2-1",
+          "pts": "859",
           "last_poll": "4",
           "trend": "+1",
           "trend_dir": "up"
         },
         {
           "rank": 4,
-          "team": "Denver",
-          "record": "5-2-1",
-          "pts": "830",
+          "team": "Michigan State",
+          "record": "6-2-0",
+          "pts": "838",
           "last_poll": "3",
           "trend": "-1",
           "trend_dir": "down"
         },
         {
           "rank": 5,
-          "team": "Western Michigan",
-          "record": "6-1-0",
-          "pts": "785 (1)",
+          "team": "Quinnipiac",
+          "record": "7-2-0",
+          "pts": "751",
           "last_poll": "6",
           "trend": "+1",
           "trend_dir": "up"
         },
         {
           "rank": 6,
-          "team": "Minnesota Duluth",
-          "record": "6-2-2",
-          "pts": "681",
-          "last_poll": "7",
-          "trend": "+1",
-          "trend_dir": "up"
+          "team": "Western Michigan",
+          "record": "6-2-1",
+          "pts": "706",
+          "last_poll": "5",
+          "trend": "-1",
+          "trend_dir": "down"
         },
         {
-          "rank": 6,
-          "team": "Quinnipiac",
-          "record": "5-2-0",
-          "pts": "681",
-          "last_poll": "10",
-          "trend": "+4",
-          "trend_dir": "up"
+          "rank": 7,
+          "team": "Minnesota Duluth",
+          "record": "7-3-2",
+          "pts": "651",
+          "last_poll": "6",
+          "trend": "-1",
+          "trend_dir": "down"
         },
         {
           "rank": 8,
-          "team": "Augustana",
-          "record": "7-0-1",
-          "pts": "600",
-          "last_poll": "11",
-          "trend": "+3",
+          "team": "North Dakota",
+          "record": "5-3-1",
+          "pts": "630",
+          "last_poll": "10",
+          "trend": "+2",
           "trend_dir": "up"
         },
         {
           "rank": 9,
-          "team": "Providence",
-          "record": "5-1-0",
-          "pts": "596",
-          "last_poll": "5",
-          "trend": "-4",
+          "team": "Augustana",
+          "record": "7-0-3",
+          "pts": "583",
+          "last_poll": "8",
+          "trend": "-1",
           "trend_dir": "down"
         },
         {
           "rank": 10,
-          "team": "North Dakota",
-          "record": "4-3-0",
-          "pts": "542",
-          "last_poll": "8",
-          "trend": "-2",
+          "team": "Providence",
+          "record": "6-2-0",
+          "pts": "522",
+          "last_poll": "9",
+          "trend": "-1",
           "trend_dir": "down"
         },
         {
           "rank": 11,
-          "team": "Colorado College",
-          "record": "6-2-0",
-          "pts": "537",
-          "last_poll": "9",
-          "trend": "-2",
-          "trend_dir": "down"
+          "team": "Dartmouth",
+          "record": "4-0-0",
+          "pts": "518",
+          "last_poll": "12",
+          "trend": "+1",
+          "trend_dir": "up"
         },
         {
           "rank": 12,
-          "team": "Dartmouth",
-          "record": "2-0-0",
-          "pts": "477",
-          "last_poll": "12",
-          "trend": "=",
-          "trend_dir": "same"
+          "team": "Colorado College",
+          "record": "7-2-1",
+          "pts": "494",
+          "last_poll": "11",
+          "trend": "-1",
+          "trend_dir": "down"
         },
         {
           "rank": 13,
           "team": "Boston University",
-          "record": "6-2-0",
-          "pts": "405",
-          "last_poll": "14",
-          "trend": "+1",
-          "trend_dir": "up"
+          "record": "7-3-0",
+          "pts": "485",
+          "last_poll": "13",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 14,
           "team": "Michigan Tech",
-          "record": "6-2-0",
-          "pts": "355",
-          "last_poll": "13",
-          "trend": "-1",
-          "trend_dir": "down"
+          "record": "6-2-2",
+          "pts": "376",
+          "last_poll": "14",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 15,
           "team": "Merrimack",
-          "record": "5-1-2",
-          "pts": "310",
-          "last_poll": "16",
-          "trend": "+1",
-          "trend_dir": "up"
+          "record": "6-1-2",
+          "pts": "341",
+          "last_poll": "15",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 16,
           "team": "Cornell",
-          "record": "1-1-0",
-          "pts": "181",
-          "last_poll": "15",
-          "trend": "-1",
-          "trend_dir": "down"
+          "record": "2-2-0",
+          "pts": "156",
+          "last_poll": "16",
+          "trend": "=",
+          "trend_dir": "same"
         },
         {
           "rank": 17,
-          "team": "Union",
-          "record": "5-2-0",
-          "pts": "126",
+          "team": "Miami",
+          "record": "7-3-0",
+          "pts": "155",
           "last_poll": "NR",
           "trend": "NEW",
           "trend_dir": "new"
         },
         {
           "rank": 18,
-          "team": "Minnesota",
-          "record": "3-3-2",
-          "pts": "121",
-          "last_poll": "18",
-          "trend": "=",
-          "trend_dir": "same"
+          "team": "Army",
+          "record": "6-2-0",
+          "pts": "117",
+          "last_poll": "19",
+          "trend": "+1",
+          "trend_dir": "up"
         },
         {
           "rank": 19,
-          "team": "Army",
-          "record": "5-1-0",
-          "pts": "117",
+          "team": "Northeastern",
+          "record": "4-2-0",
+          "pts": "114",
           "last_poll": "NR",
           "trend": "NEW",
           "trend_dir": "new"
         },
         {
           "rank": 20,
-          "team": "Connecticut",
-          "record": "3-4-1",
-          "pts": "92",
-          "last_poll": "17",
-          "trend": "-3",
-          "trend_dir": "down"
+          "team": "Vermont",
+          "record": "5-3-1",
+          "pts": "65",
+          "last_poll": "NR",
+          "trend": "NEW",
+          "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -842,7 +842,7 @@
           "ovr": "1-1"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -907,7 +907,7 @@
           "ovr": "1-3"
         }
       ],
-      "updated_at": "2026-11-09T14:47:44+00:00"
+      "updated_at": "2026-11-09T17:46:02+00:00"
     },
     "summit_193": {
       "status": "error",
