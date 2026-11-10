@@ -2,7 +2,7 @@
 """
 Fetch standings and national polls from Summit League, PFL, NCHC, WCHA, and USCHO.
 Extracts:
-  - Sports Standings: Team Name, Acronym, Conference W-L, Overall W-L, CPTS/PTS
+  - Sports Standings: Team Name, Acronym, Conference W-L, Overall W-L, CPTS/PTS, GP, and OW-OL-SW
   - USCHO Polls: Rank, Team Name, Record, Pts + First-Place Votes formatted as "123 (12)",
     Last Poll rank, and Poll movement (up/down/same/new).
 
@@ -149,6 +149,8 @@ FEEDS_CONFIG = [
         "url": "https://nchchockey.com/standings.aspx?path=mhockey",
         "point_col": "pts",
         "skip_pods": False,
+        "include_gp": True,
+        "include_ow_ol_sw": True,
     },
     {
         "id": "uscho_mens_poll",
@@ -248,9 +250,11 @@ def is_pods_table(table):
 
 def parse_standings_table(html, meta):
     soup = BeautifulSoup(html, "html.parser")
-    point_col_type = meta.get("point_col")
-    skip_pods      = meta.get("skip_pods", False)
-    overrides      = meta.get("acronym_overrides", None)
+    point_col_type   = meta.get("point_col")
+    skip_pods        = meta.get("skip_pods", False)
+    overrides        = meta.get("acronym_overrides", None)
+    include_gp       = meta.get("include_gp", False)
+    include_ow_ol_sw = meta.get("include_ow_ol_sw", False)
 
     target = None
 
@@ -305,21 +309,33 @@ def parse_standings_table(html, meta):
 
     conf_combined = exact_idx("conf", "conference", "league", "wcha", "nchc")
     if conf_combined is None:
-        conf_combined = idx("conf record", "conference record", "wcha record", "nchc record")
+        conf_combined = idx("conf record", "conference record", "wcha record", "nchc record", "conf. w-l-t", "conf w-l-t")
     conf_w_idx = idx("conf w", "cw", "conference w", "wcha w") if conf_combined is None else None
     conf_l_idx = idx("conf l", "cl", "conference l", "wcha l") if conf_combined is None else None
 
     ovr_combined = exact_idx("overall", "ovr", "total")
     if ovr_combined is None:
-        ovr_combined = idx("overall record", "ovr record", "total record")
+        ovr_combined = idx("overall record", "ovr record", "total record", "overall w-l-t", "ovr w-l-t")
     ovr_w_idx = idx("overall w", "ow", "ovr w") if ovr_combined is None else None
     ovr_l_idx = idx("overall l", "ol", "ovr l") if ovr_combined is None else None
 
+    # Points column
     pts_idx = None
     if point_col_type == "cpts":
         pts_idx = exact_idx("cpts", "conf pts", "pts", "points") or idx("cpts", "conf pts")
     elif point_col_type == "pts":
         pts_idx = exact_idx("pts", "points", "total pts", "tp", "wcha pts", "nchc pts") or idx("pts", "point")
+
+    # NCHC specific indices for Conference GP, OW-OL, and SW
+    gp_idx = None
+    if include_gp:
+        gp_idx = exact_idx("conf. gp", "conf gp", "cgp") or idx("conf. gp", "conf gp") or exact_idx("gp")
+
+    ow_ol_idx = None
+    sw_idx = None
+    if include_ow_ol_sw:
+        ow_ol_idx = exact_idx("ow-ol", "ow/ol", "ow - ol") or idx("ow-ol", "ow/ol")
+        sw_idx    = exact_idx("sw", "so wins", "shootout w") or idx("sw", "shootout w")
 
     rows = []
     for tr in body_rows(target):
@@ -331,7 +347,7 @@ def parse_standings_table(html, meta):
             return clean(cells[i].get_text())
 
         team = team_text(cells[team_idx]) if team_idx is not None else ""
-        
+
         # Skip empty names, header titles, and Pod headers (e.g. "Pod A", "Pod B")
         if not team or team.lower() in ("team", "school", "member", "institution") or team.lower().startswith("pod"):
             continue
@@ -360,10 +376,23 @@ def parse_standings_table(html, meta):
             "ovr":     ovr,
         }
 
+        # Include Conference GP if configured
+        if include_gp and gp_idx is not None:
+            row_data["gp"] = cell_text(gp_idx) or "0"
+
+        # Points column
         if point_col_type == "cpts" and pts_idx is not None:
             row_data["cpts"] = cell_text(pts_idx) or "0"
         elif point_col_type == "pts" and pts_idx is not None:
             row_data["pts"] = cell_text(pts_idx) or "0"
+
+        # Combine OW-OL and SW into "OW-OL-SW" (e.g., "0-0" and "0" -> "0-0-0")
+        if include_ow_ol_sw:
+            ow_ol_val = cell_text(ow_ol_idx).replace("–", "-") if ow_ol_idx is not None else "0-0"
+            sw_val    = cell_text(sw_idx) if sw_idx is not None else "0"
+            ow_ol_val = ow_ol_val if ow_ol_val else "0-0"
+            sw_val    = sw_val if sw_val else "0"
+            row_data["ow_ol_sw"] = f"{ow_ol_val}-{sw_val}"
 
         rows.append(row_data)
 
@@ -456,6 +485,7 @@ def parse_uscho_poll_table(html, meta):
             return clean(cells[i].get_text())
 
         raw_team = team_text(cells[team_idx]) if team_idx is not None else cell_text(1)
+
         if not raw_team or raw_team.lower() in ("team", "school", "rnk", "rank", "ranking"):
             continue
 
