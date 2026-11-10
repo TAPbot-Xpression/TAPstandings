@@ -208,6 +208,7 @@
     .table-wrap {
       width: 100%;
       flex: 1;
+      overflow-x: auto;
     }
 
     table {
@@ -218,7 +219,7 @@
     }
 
     thead th {
-      padding: 0.7rem 1rem;
+      padding: 0.7rem 0.85rem;
       font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
@@ -263,45 +264,8 @@
       color: #fbbf24 !important;
     }
 
-    td.trend-cell {
-      text-align: center;
-      width: 58px;
-    }
-
-    .trend-badge {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.15rem;
-      font-size: 0.72rem;
-      font-weight: 700;
-      font-variant-numeric: tabular-nums;
-      padding: 0.15rem 0.4rem;
-      border-radius: 4px;
-      letter-spacing: 0.02em;
-    }
-
-    .trend-up {
-      color: #4ade80;
-      background: rgba(74, 222, 128, 0.12);
-    }
-
-    .trend-down {
-      color: #f87171;
-      background: rgba(248, 113, 113, 0.12);
-    }
-
-    .trend-same {
-      color: var(--text-muted);
-    }
-
-    .trend-new {
-      color: #fbbf24;
-      background: rgba(251, 191, 36, 0.12);
-    }
-
     td {
-      padding: 0.65rem 1rem;
+      padding: 0.65rem 0.85rem;
       vertical-align: middle;
     }
 
@@ -310,7 +274,7 @@
       font-size: 0.82rem;
       font-weight: 700;
       text-align: center;
-      width: 48px;
+      width: 44px;
     }
 
     td.team-cell {
@@ -349,7 +313,6 @@
       font-variant-numeric: tabular-nums;
       color: #cbd5e1;
       white-space: nowrap;
-      width: 110px;
     }
 
     td.pts-col {
@@ -358,7 +321,43 @@
       font-weight: 700;
       color: #a855f7;
       white-space: nowrap;
-      width: 90px;
+    }
+
+    td.trend-cell {
+      text-align: center;
+      width: 58px;
+    }
+
+    .trend-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.15rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      padding: 0.15rem 0.4rem;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    .trend-up {
+      color: #4ade80;
+      background: rgba(74, 222, 128, 0.12);
+    }
+
+    .trend-down {
+      color: #f87171;
+      background: rgba(248, 113, 113, 0.12);
+    }
+
+    .trend-same {
+      color: var(--text-muted);
+    }
+
+    .trend-new {
+      color: #fbbf24;
+      background: rgba(251, 191, 36, 0.12);
     }
 
     .poll-date-badge {
@@ -562,6 +561,7 @@
       const isError = s.status === "error" || !s.rows || s.rows.length === 0;
       const isStale = s.status === "stale";
       const isPoll = id.includes("poll") || s.type === "poll";
+      const isNCHC = id === "mhockey";
 
       let badgeClass = "badge-ok";
       let badgeText = isPoll ? "National Poll" : "Live";
@@ -639,8 +639,48 @@
             </table>
           </div>
         `;
+      } else if (isNCHC) {
+        // Specific Table Layout for NCHC Men's Ice Hockey: PTS, CONF GP, CONF, OW-OL-SW, OVERALL
+        bodyContent = `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th class="num">#</th>
+                  <th>Team</th>
+                  <th class="num pts-col">PTS</th>
+                  <th class="num">Conf GP</th>
+                  <th class="num">Conf</th>
+                  <th class="num">OW-OL-SW</th>
+                  <th class="num">Overall</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${s.rows.map(r => {
+                  const isUST = r.acronym === "UST" || (r.team && r.team.toLowerCase().includes("st. thomas"));
+                  return `
+                    <tr class="${isUST ? 'highlight-ust' : ''}">
+                      <td class="rank">${r.rank}</td>
+                      <td>
+                        <div class="team-cell">
+                          <span class="team-acronym">${escHtml(r.acronym || '—')}</span>
+                          <span class="team-name">${escHtml(r.team)}</span>
+                        </div>
+                      </td>
+                      <td class="pts-col">${escHtml(r.pts ?? '0')}</td>
+                      <td class="record">${escHtml(r.gp ?? '0')}</td>
+                      <td class="record">${escHtml(r.conf || '—')}</td>
+                      <td class="record">${escHtml(r.ow_ol_sw || '0-0-0')}</td>
+                      <td class="record">${escHtml(r.ovr || '—')}</td>
+                    </tr>
+                  `;
+                }).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
       } else {
-        // Table layout for Conference Standings (Rank, Team + Acronym, Conf, Overall, CPTS/PTS)
+        // Standard Conference Standings Layout (Rank, Team + Acronym, Conf, Overall, CPTS/PTS)
         const hasCpts = s.rows && s.rows.some(r => r.cpts !== undefined);
         const hasPts  = s.rows && s.rows.some(r => r.pts !== undefined);
         const ptsHeader = hasCpts ? "CPTS" : (hasPts ? "PTS" : null);
