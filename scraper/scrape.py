@@ -176,18 +176,18 @@ FEEDS_CONFIG = [
     },
     # ── Spring Sports ─────────────────────────────────────────────────────────
     {
-        "id": "summit_193",
+        "id": "softball",
         "name": "Summit League Softball",
         "type": "standings",
-        "url": "https://thesummitleague.org/standings.aspx?standings=193",
+        "url": "https://thesummitleague.org/standings.aspx?path=softball",
         "point_col": None,
         "skip_pods": False,
     },
     {
-        "id": "summit_195",
+        "id": "baseball",
         "name": "Summit League Baseball",
         "type": "standings",
-        "url": "https://thesummitleague.org/standings.aspx?standings=195",
+        "url": "https://thesummitleague.org/standings.aspx?path=baseball",
         "point_col": None,
         "skip_pods": False,
     },
