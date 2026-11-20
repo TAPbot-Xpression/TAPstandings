@@ -14,7 +14,6 @@
       --border:         #262c3a;
       --border-light:   #3b4254;
 
-      /* St. Thomas Theme Accents */
       --team-primary:   #510C76;
       --team-accent:    #8b2fc9;
       --team-glow:      rgba(139, 47, 201, 0.35);
@@ -55,7 +54,7 @@
       margin: 0 auto;
     }
 
-    /* ── Header (Title format & styling matching Basketball Stats) ───────────── */
+    /* ── Header ───────────────────────────────────────────────────────────────── */
     header {
       padding-bottom: 2rem;
       border-bottom: 1px solid var(--border);
@@ -94,12 +93,11 @@
     .meta {
       font-size: 0.92rem;
       color: var(--text-muted);
-      text-align: left;
       margin-top: 0.2rem;
       line-height: 1.4;
     }
 
-    /* ── Controls Bar & Filter Buttons ───────────────────────────────────────── */
+    /* ── Controls Bar ─────────────────────────────────────────────────────────── */
     .controls {
       display: flex;
       flex-wrap: wrap;
@@ -119,7 +117,6 @@
       gap: 0.55rem;
     }
 
-    /* Enlarged filter buttons with modern styling */
     .filter-btn {
       background: var(--surface-2);
       border: 1.5px solid var(--border);
@@ -149,7 +146,6 @@
       box-shadow: 0 0 16px var(--team-glow);
     }
 
-    /* JSON link matching Basketball stats compact button format */
     .site-link-btn {
       display: inline-flex;
       align-items: center;
@@ -173,7 +169,7 @@
       box-shadow: 0 0 12px var(--team-glow);
     }
 
-    /* ── Standings Cards Grid ────────────────────────────────────────────────── */
+    /* ── Grid ─────────────────────────────────────────────────────────────────── */
     .grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -191,7 +187,7 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      transition: transform 0.15s ease, border-color 0.15s ease;
+      transition: border-color 0.15s ease;
       width: 100%;
     }
 
@@ -199,6 +195,7 @@
       border-color: var(--border-light);
     }
 
+    /* ── Card Header ──────────────────────────────────────────────────────────── */
     .card-header {
       display: flex;
       align-items: center;
@@ -213,6 +210,8 @@
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
+      flex: 1 1 auto;
+      min-width: 0;
     }
 
     .card-league {
@@ -230,6 +229,34 @@
       letter-spacing: -0.01em;
     }
 
+    /* Header right cluster: source link + badge */
+    .card-header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      flex-shrink: 0;
+    }
+
+    /* Source link inside card header */
+    .card-source-link {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.22rem 0.55rem;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .card-source-link:hover {
+      color: var(--team-light);
+      border-color: var(--team-accent);
+      background: rgba(139, 47, 201, 0.15);
+    }
+
     .badge {
       font-size: 0.72rem;
       padding: 0.25rem 0.6rem;
@@ -237,12 +264,13 @@
       font-weight: 700;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
-    .badge-ok     { background: var(--badge-ok-bg); color: var(--badge-ok-txt); }
+    .badge-ok     { background: var(--badge-ok-bg);    color: var(--badge-ok-txt); }
     .badge-stale  { background: var(--badge-stale-bg); color: var(--badge-stale-txt); }
     .badge-error  { background: var(--badge-error-bg); color: var(--badge-error-txt); }
 
-    /* ── Standings Table ─────────────────────────────────────────────────────── */
+    /* ── Table ────────────────────────────────────────────────────────────────── */
     .table-wrap {
       width: 100%;
       flex: 1;
@@ -268,24 +296,16 @@
       text-align: left;
     }
 
-    thead th.num {
-      text-align: center;
-    }
+    thead th.num { text-align: center; }
 
     tbody tr {
       border-bottom: 1px solid #1a1e2a;
       transition: background 0.15s;
     }
 
-    tbody tr:last-child {
-      border-bottom: none;
-    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #1c212e; }
 
-    tbody tr:hover {
-      background: #1c212e;
-    }
-
-    /* St. Thomas Row Highlight */
     tbody tr.highlight-ust {
       background: var(--ust-highlight) !important;
     }
@@ -308,9 +328,7 @@
       width: 44px;
     }
 
-    .rank-top3 {
-      color: #fbbf24 !important;
-    }
+    .rank-top3 { color: #fbbf24 !important; }
 
     td.team-cell {
       display: flex;
@@ -360,10 +378,7 @@
       white-space: nowrap;
     }
 
-    td.trend-cell {
-      text-align: center;
-      width: 62px;
-    }
+    td.trend-cell { text-align: center; width: 62px; }
 
     .trend-badge {
       display: inline-flex;
@@ -377,24 +392,10 @@
       border-radius: 4px;
     }
 
-    .trend-up {
-      color: #4ade80;
-      background: rgba(74, 222, 128, 0.14);
-    }
-
-    .trend-down {
-      color: #f87171;
-      background: rgba(248, 113, 113, 0.14);
-    }
-
-    .trend-same {
-      color: var(--text-faint);
-    }
-
-    .trend-new {
-      color: #fbbf24;
-      background: rgba(251, 191, 36, 0.14);
-    }
+    .trend-up   { color: #4ade80; background: rgba(74, 222, 128, 0.14); }
+    .trend-down { color: #f87171; background: rgba(248, 113, 113, 0.14); }
+    .trend-same { color: var(--text-faint); }
+    .trend-new  { color: #fbbf24; background: rgba(251, 191, 36, 0.14); }
 
     .poll-date-badge {
       display: inline-block;
@@ -407,29 +408,6 @@
       border-radius: 999px;
       margin-left: 0.5rem;
       vertical-align: middle;
-      text-transform: none;
-    }
-
-    .card-footer {
-      padding: 0.7rem 1.25rem;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #11141b;
-    }
-
-    .card-footer a {
-      color: #c084fc;
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.15s ease;
-    }
-
-    .card-footer a:hover {
-      text-decoration: underline;
     }
 
     .message {
@@ -445,7 +423,7 @@
       display: block;
     }
 
-    /* ── Footer (Matching Basketball Stats) ─────────────────────────────────── */
+    /* ── Page Footer ──────────────────────────────────────────────────────────── */
     footer {
       margin-top: 3.5rem;
       padding-top: 1.75rem;
@@ -462,16 +440,13 @@
       transition: color 0.15s ease;
     }
 
-    footer a:hover {
-      text-decoration: underline;
-    }
+    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    
-    <!-- Header with Wordmark, Eyebrow, Title and Feed Meta -->
+
     <header>
       <div class="wordmark">
         <span class="wordmark-eyebrow" id="eyebrowText">Tommie Athletics · 2026-27</span>
@@ -480,7 +455,6 @@
       </div>
     </header>
 
-    <!-- Controls Bar with Filter Buttons and AllStandings.json link -->
     <div class="controls">
       <div class="filter-group" id="filter-buttons">
         <button class="filter-btn active" data-filter="all">All Sports</button>
@@ -495,7 +469,6 @@
       </div>
     </div>
 
-    <!-- Sports Standings & Polls Grid -->
     <div class="grid" id="sports-grid">
       <div class="card" style="grid-column: 1 / -1;">
         <div class="message">
@@ -505,7 +478,6 @@
       </div>
     </div>
 
-    <!-- Page Footer -->
     <footer>
       <a href="https://github.com/TAPbot-Xpression/TAPstandings" target="_blank" rel="noopener noreferrer">
         TAPbot - Developed by St. Thomas Athletics - Hosted on GitHub
@@ -518,50 +490,22 @@
     let sportsData = {};
     let activeFilter = "all";
 
-    // Ordering definition: ensures winter sports place polls directly below their conference tables
     const DISPLAY_ORDER = [
-      // Fall
-      "wsoc",
-      "msoc",
-      "pfl",
-      "wvball",
-      // Winter
-      "whockey",
-      "uscho_womens_poll",
-      "mhockey",
-      "uscho_mens_poll",
-      "wbball",
-      "mbball",
-      // Spring
-      "baseball",
-      "summit_193",
-      "bsb",
-      "softball",
-      "summit_195",
-      "sball"
+      "wsoc", "msoc", "pfl", "wvball",
+      "whockey", "uscho_womens_poll",
+      "mhockey", "uscho_mens_poll",
+      "wbball", "mbball",
+      "baseball", "summit_193", "bsb",
+      "softball", "summit_195", "sball"
     ];
 
-    // Season category mapping
     const SEASON_MAP = {
-      // Fall
-      wsoc: "fall",
-      msoc: "fall",
-      pfl: "fall",
-      wvball: "fall",
-      // Winter
-      whockey: "winter",
-      uscho_womens_poll: "winter",
-      mhockey: "winter",
-      uscho_mens_poll: "winter",
-      wbball: "winter",
-      mbball: "winter",
-      // Spring (Direct ID mappings for Baseball & Softball)
-      summit_193: "spring",
-      baseball: "spring",
-      bsb: "spring",
-      summit_195: "spring",
-      softball: "spring",
-      sball: "spring"
+      wsoc: "fall", msoc: "fall", pfl: "fall", wvball: "fall",
+      whockey: "winter", uscho_womens_poll: "winter",
+      mhockey: "winter", uscho_mens_poll: "winter",
+      wbball: "winter", mbball: "winter",
+      summit_193: "spring", baseball: "spring", bsb: "spring",
+      summit_195: "spring", softball: "spring", sball: "spring"
     };
 
     async function loadData() {
@@ -599,55 +543,29 @@
       }
     }
 
-    // Determine season category with robust fallback checks on sport name
     function getSeasonCategory(sportId, sportObj) {
       if (SEASON_MAP[sportId]) return SEASON_MAP[sportId];
 
       const name = (sportObj && sportObj.name ? sportObj.name : sportId).toLowerCase();
 
-      // Spring sports detection
-      if (
-        name.includes("baseball") ||
-        name.includes("softball") ||
-        name.includes("track") ||
-        name.includes("golf") ||
-        name.includes("tennis") ||
-        sportId.startsWith("summit_19")
-      ) {
-        return "spring";
-      }
+      if (name.includes("baseball") || name.includes("softball") ||
+          name.includes("track") || name.includes("golf") ||
+          name.includes("tennis") || sportId.startsWith("summit_19")) return "spring";
 
-      // Winter sports detection
-      if (
-        name.includes("hockey") ||
-        name.includes("basketball") ||
-        name.includes("swim")
-      ) {
-        return "winter";
-      }
+      if (name.includes("hockey") || name.includes("basketball") ||
+          name.includes("swim")) return "winter";
 
-      // Fall sports detection
-      if (
-        name.includes("soccer") ||
-        name.includes("football") ||
-        name.includes("volleyball") ||
-        name.includes("cross country")
-      ) {
-        return "fall";
-      }
+      if (name.includes("soccer") || name.includes("football") ||
+          name.includes("volleyball") || name.includes("cross country")) return "fall";
 
       return "other";
     }
 
-    // Clean and normalize table titles per specifications
     function cleanSportTitle(id, rawName) {
       if (id === "pfl") return "Football";
       if (id === "whockey") return "Women's Hockey";
       if (id === "mhockey") return "Men's Hockey";
-
       if (!rawName) return id;
-
-      // Remove repetitive "Summit League" prefix from the beginning
       return rawName.replace(/^Summit League\s+/i, '').trim();
     }
 
@@ -661,17 +579,13 @@
 
     function renderGrid() {
       const grid = document.getElementById("sports-grid");
-      
+
       const knownKeys = DISPLAY_ORDER.filter(id => sportsData[id]);
       const remainingKeys = Object.keys(sportsData).filter(id => !DISPLAY_ORDER.includes(id));
       const sortedKeys = [...knownKeys, ...remainingKeys];
 
       if (sortedKeys.length === 0) {
-        grid.innerHTML = `
-          <div class="card" style="grid-column: 1 / -1;">
-            <div class="message">No sport standings or polls available in feed.</div>
-          </div>
-        `;
+        grid.innerHTML = `<div class="card" style="grid-column: 1 / -1;"><div class="message">No sport standings or polls available in feed.</div></div>`;
         return;
       }
 
@@ -681,11 +595,7 @@
       });
 
       if (filtered.length === 0) {
-        grid.innerHTML = `
-          <div class="card" style="grid-column: 1 / -1;">
-            <div class="message">No tables found for this season filter.</div>
-          </div>
-        `;
+        grid.innerHTML = `<div class="card" style="grid-column: 1 / -1;"><div class="message">No tables found for this season filter.</div></div>`;
         return;
       }
 
@@ -695,32 +605,30 @@
     function buildCard(id, s) {
       const isError = s.status === "error" || !s.rows || s.rows.length === 0;
       const isStale = s.status === "stale";
-      const isPoll = id.includes("poll") || s.type === "poll";
-      const isNCHC = id === "mhockey";
+      const isPoll  = id.includes("poll") || s.type === "poll";
+      const isNCHC  = id === "mhockey";
 
       let badgeClass = "badge-ok";
-      let badgeText = isPoll ? "National Poll" : "Live";
+      let badgeText  = isPoll ? "National Poll" : "Live";
+      if (isError) { badgeClass = "badge-error"; badgeText = "Off Season / Error"; }
+      else if (isStale) { badgeClass = "badge-stale"; badgeText = "⚠ Stale"; }
 
-      if (isError) {
-        badgeClass = "badge-error";
-        badgeText = "Off Season / Error";
-      } else if (isStale) {
-        badgeClass = "badge-stale";
-        badgeText = "⚠ Stale";
-      }
+      // Source link rendered in the header
+      const sourceLinkText = isPoll ? "Official USCHO Poll ↗" : "Official Standings ↗";
+      const sourceLink = s.source
+        ? `<a href="${escHtml(s.source)}" target="_blank" rel="noopener noreferrer" class="card-source-link">${sourceLinkText}</a>`
+        : "";
 
       let bodyContent = "";
 
       if (isError) {
-        const errorMsg = s.error || "No current active data found.";
         bodyContent = `
           <div class="message">
             <span class="message-icon">📋</span>
-            ${escHtml(errorMsg)}
-          </div>
-        `;
+            ${escHtml(s.error || "No current active data found.")}
+          </div>`;
+
       } else if (isPoll) {
-        // Table layout for USCHO National Polls
         bodyContent = `
           <div class="table-wrap">
             <table>
@@ -736,46 +644,28 @@
               </thead>
               <tbody>
                 ${s.rows.map(r => {
-                  const isUST = r.team && r.team.toLowerCase().includes("st. thomas");
+                  const isUST    = r.team && r.team.toLowerCase().includes("st. thomas");
                   const top3Class = r.rank <= 3 ? "rank-top3" : "";
-
-                  let trendClass = "trend-same";
+                  let trendClass  = "trend-same";
                   let trendSymbol = r.trend || "=";
-
-                  if (r.trend_dir === "up") {
-                    trendClass = "trend-up";
-                    trendSymbol = `▲ ${String(r.trend).replace('+', '')}`;
-                  } else if (r.trend_dir === "down") {
-                    trendClass = "trend-down";
-                    trendSymbol = `▼ ${String(r.trend).replace('-', '')}`;
-                  } else if (r.trend_dir === "new") {
-                    trendClass = "trend-new";
-                    trendSymbol = "NEW";
-                  }
-
+                  if (r.trend_dir === "up")   { trendClass = "trend-up";   trendSymbol = `▲ ${String(r.trend).replace('+', '')}`; }
+                  else if (r.trend_dir === "down") { trendClass = "trend-down"; trendSymbol = `▼ ${String(r.trend).replace('-', '')}`; }
+                  else if (r.trend_dir === "new")  { trendClass = "trend-new";  trendSymbol = "NEW"; }
                   return `
                     <tr class="${isUST ? 'highlight-ust' : ''}">
                       <td class="rank ${top3Class}">${r.rank}</td>
-                      <td>
-                        <div class="team-cell">
-                          <span class="team-name">${escHtml(r.team)}</span>
-                        </div>
-                      </td>
+                      <td><div class="team-cell"><span class="team-name">${escHtml(r.team)}</span></div></td>
                       <td class="record">${escHtml(r.record || '—')}</td>
                       <td class="pts-col">${escHtml(r.pts || '—')}</td>
                       <td class="record">${escHtml(r.last_poll || 'NR')}</td>
-                      <td class="trend-cell">
-                        <span class="trend-badge ${trendClass}">${trendSymbol}</span>
-                      </td>
-                    </tr>
-                  `;
+                      <td class="trend-cell"><span class="trend-badge ${trendClass}">${trendSymbol}</span></td>
+                    </tr>`;
                 }).join("")}
               </tbody>
             </table>
-          </div>
-        `;
+          </div>`;
+
       } else if (isNCHC) {
-        // Table Layout for NCHC Men's Ice Hockey
         bodyContent = `
           <div class="table-wrap">
             <table>
@@ -796,28 +686,24 @@
                   return `
                     <tr class="${isUST ? 'highlight-ust' : ''}">
                       <td class="rank">${r.rank}</td>
-                      <td>
-                        <div class="team-cell">
-                          <span class="team-acronym">${escHtml(r.acronym || '—')}</span>
-                          <span class="team-name">${escHtml(r.team)}</span>
-                        </div>
-                      </td>
+                      <td><div class="team-cell">
+                        <span class="team-acronym">${escHtml(r.acronym || '—')}</span>
+                        <span class="team-name">${escHtml(r.team)}</span>
+                      </div></td>
                       <td class="pts-col">${escHtml(r.pts ?? '0')}</td>
                       <td class="record">${escHtml(r.gp ?? '0')}</td>
                       <td class="record">${escHtml(r.conf || '—')}</td>
                       <td class="record">${escHtml(r.ow_ol_sw || '0-0-0')}</td>
                       <td class="record">${escHtml(r.ovr || '—')}</td>
-                    </tr>
-                  `;
+                    </tr>`;
                 }).join("")}
               </tbody>
             </table>
-          </div>
-        `;
+          </div>`;
+
       } else {
-        // Standard Conference Standings Layout
-        const hasCpts = s.rows && s.rows.some(r => r.cpts !== undefined);
-        const hasPts  = s.rows && s.rows.some(r => r.pts !== undefined);
+        const hasCpts   = s.rows && s.rows.some(r => r.cpts !== undefined);
+        const hasPts    = s.rows && s.rows.some(r => r.pts !== undefined);
         const ptsHeader = hasCpts ? "CPTS" : (hasPts ? "PTS" : null);
 
         bodyContent = `
@@ -834,35 +720,27 @@
               </thead>
               <tbody>
                 ${s.rows.map(r => {
-                  const isUST = r.acronym === "UST" || (r.team && r.team.toLowerCase().includes("st. thomas"));
+                  const isUST  = r.acronym === "UST" || (r.team && r.team.toLowerCase().includes("st. thomas"));
                   const ptsVal = hasCpts ? (r.cpts ?? "—") : (hasPts ? (r.pts ?? "—") : null);
-
                   return `
                     <tr class="${isUST ? 'highlight-ust' : ''}">
                       <td class="rank">${r.rank}</td>
-                      <td>
-                        <div class="team-cell">
-                          <span class="team-acronym">${escHtml(r.acronym || '—')}</span>
-                          <span class="team-name">${escHtml(r.team)}</span>
-                        </div>
-                      </td>
+                      <td><div class="team-cell">
+                        <span class="team-acronym">${escHtml(r.acronym || '—')}</span>
+                        <span class="team-name">${escHtml(r.team)}</span>
+                      </div></td>
                       <td class="record">${escHtml(r.conf)}</td>
                       <td class="record">${escHtml(r.ovr)}</td>
                       ${ptsHeader ? `<td class="pts-col">${escHtml(ptsVal)}</td>` : ""}
-                    </tr>
-                  `;
+                    </tr>`;
                 }).join("")}
               </tbody>
             </table>
-          </div>
-        `;
+          </div>`;
       }
 
       const displayTitle = cleanSportTitle(id, s.name);
-      const dateBadge = s.poll_date ? `<span class="poll-date-badge">${escHtml(s.poll_date)}</span>` : "";
-      const sourceLinkText = isPoll ? "Official USCHO Poll ↗" : "Official Standings ↗";
-      const sourceLink = s.source ? `<a href="${escHtml(s.source)}" target="_blank" rel="noopener noreferrer">${sourceLinkText}</a>` : `<span></span>`;
-      const updatedTime = s.updated_at ? new Date(s.updated_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : '';
+      const dateBadge    = s.poll_date ? `<span class="poll-date-badge">${escHtml(s.poll_date)}</span>` : "";
 
       return `
         <div class="card">
@@ -871,15 +749,13 @@
               <div class="card-league">${escHtml(getLeagueLabel(id))}</div>
               <h2 class="card-title">${escHtml(displayTitle)}${dateBadge}</h2>
             </div>
-            <span class="badge ${badgeClass}">${badgeText}</span>
+            <div class="card-header-right">
+              ${sourceLink}
+              <span class="badge ${badgeClass}">${badgeText}</span>
+            </div>
           </div>
           ${bodyContent}
-          <div class="card-footer">
-            ${sourceLink}
-            <span>${updatedTime ? 'Scanned ' + updatedTime : ''}</span>
-          </div>
-        </div>
-      `;
+        </div>`;
     }
 
     function escHtml(str) {
@@ -890,7 +766,6 @@
         .replace(/"/g, "&quot;");
     }
 
-    // Filter button handlers
     document.querySelectorAll(".filter-btn").forEach(btn => {
       btn.addEventListener("click", () => {
         document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
