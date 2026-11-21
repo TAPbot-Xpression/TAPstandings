@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-21T17:29:13+00:00",
+  "generated_at": "2026-11-21T21:29:31+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -141,15 +141,15 @@
           "rank": 1,
           "team": "Dayton",
           "acronym": "DAY",
-          "conf": "6-1",
-          "ovr": "9-1"
+          "conf": "7-1",
+          "ovr": "10-1"
         },
         {
           "rank": 2,
           "team": "Butler",
           "acronym": "BUT",
-          "conf": "6-1",
-          "ovr": "9-2"
+          "conf": "7-1",
+          "ovr": "10-2"
         },
         {
           "rank": 3,
@@ -183,8 +183,8 @@
           "rank": 7,
           "team": "Presbyterian",
           "acronym": "PC",
-          "conf": "3-4",
-          "ovr": "4-6"
+          "conf": "3-5",
+          "ovr": "4-7"
         },
         {
           "rank": 8,
@@ -204,8 +204,8 @@
           "rank": 10,
           "team": "Morehead State",
           "acronym": "MOSU",
-          "conf": "2-5",
-          "ovr": "3-8"
+          "conf": "2-6",
+          "ovr": "3-9"
         },
         {
           "rank": 11,
@@ -215,7 +215,7 @@
           "ovr": "1-10"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -280,7 +280,7 @@
           "ovr": "6-19"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -292,9 +292,9 @@
           "rank": 1,
           "team": "Ohio State",
           "acronym": "OHIOST",
-          "conf": "10-1-0",
-          "ovr": "14-1-0",
-          "pts": "30"
+          "conf": "11-1-0",
+          "ovr": "15-1-0",
+          "pts": "33"
         },
         {
           "rank": 2,
@@ -316,8 +316,8 @@
           "rank": 4,
           "team": "St. Cloud State",
           "acronym": "STCLOU",
-          "conf": "6-5-0",
-          "ovr": "8-7-0",
+          "conf": "6-6-0",
+          "ovr": "8-8-0",
           "pts": "17"
         },
         {
@@ -353,7 +353,7 @@
           "pts": "3"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
@@ -498,7 +498,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -607,7 +607,7 @@
           "ow_ol_sw": "0-0-0"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
@@ -797,7 +797,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -835,24 +835,24 @@
         },
         {
           "rank": 5,
-          "team": "North Dakota State",
-          "acronym": "NDSU",
-          "conf": "0-0",
-          "ovr": "2-3"
-        },
-        {
-          "rank": 6,
           "team": "Omaha",
           "acronym": "OMA",
           "conf": "0-0",
           "ovr": "2-3"
         },
         {
-          "rank": 7,
+          "rank": 6,
           "team": "South Dakota State",
           "acronym": "SDSU",
           "conf": "0-0",
           "ovr": "2-3"
+        },
+        {
+          "rank": 7,
+          "team": "North Dakota State",
+          "acronym": "NDSU",
+          "conf": "0-0",
+          "ovr": "2-4"
         },
         {
           "rank": 8,
@@ -862,7 +862,7 @@
           "ovr": "1-4"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -927,7 +927,7 @@
           "ovr": "2-5"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     },
     "softball": {
       "status": "error",
@@ -983,7 +983,7 @@
           "ovr": "0-0"
         }
       ],
-      "updated_at": "2026-11-21T17:29:13+00:00"
+      "updated_at": "2026-11-21T21:29:31+00:00"
     }
   }
 }
