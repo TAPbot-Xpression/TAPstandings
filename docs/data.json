@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T17:30:24+00:00",
+  "generated_at": "2026-11-22T21:33:32+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -215,7 +215,7 @@
           "ovr": "1-11"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -280,7 +280,7 @@
           "ovr": "6-19"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -308,9 +308,9 @@
           "rank": 3,
           "team": "Wisconsin",
           "acronym": "WISC",
-          "conf": "7-2-0",
-          "ovr": "11-2-0",
-          "pts": "21"
+          "conf": "8-2-0",
+          "ovr": "12-2-0",
+          "pts": "24"
         },
         {
           "rank": 4,
@@ -348,12 +348,12 @@
           "rank": 8,
           "team": "Bemidji State",
           "acronym": "BEMIDJI",
-          "conf": "1-10-0",
-          "ovr": "2-11-0",
+          "conf": "1-11-0",
+          "ovr": "2-12-0",
           "pts": "3"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
@@ -498,7 +498,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -607,7 +607,7 @@
           "ow_ol_sw": "0-0-0"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
@@ -797,7 +797,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -828,17 +828,17 @@
         },
         {
           "rank": 4,
+          "team": "Omaha",
+          "acronym": "OMA",
+          "conf": "0-0",
+          "ovr": "3-3"
+        },
+        {
+          "rank": 5,
           "team": "Oral Roberts",
           "acronym": "ORU",
           "conf": "0-0",
           "ovr": "3-4"
-        },
-        {
-          "rank": 5,
-          "team": "Omaha",
-          "acronym": "OMA",
-          "conf": "0-0",
-          "ovr": "2-3"
         },
         {
           "rank": 6,
@@ -862,7 +862,7 @@
           "ovr": "1-4"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -914,20 +914,20 @@
         },
         {
           "rank": 7,
+          "team": "South Dakota",
+          "acronym": "USD",
+          "conf": "0-0",
+          "ovr": "3-5"
+        },
+        {
+          "rank": 8,
           "team": "North Dakota State",
           "acronym": "NDSU",
           "conf": "0-0",
           "ovr": "2-5"
-        },
-        {
-          "rank": 8,
-          "team": "South Dakota",
-          "acronym": "USD",
-          "conf": "0-0",
-          "ovr": "2-5"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     },
     "softball": {
       "status": "error",
@@ -983,7 +983,7 @@
           "ovr": "0-0"
         }
       ],
-      "updated_at": "2026-11-22T17:30:24+00:00"
+      "updated_at": "2026-11-22T21:33:32+00:00"
     }
   }
 }
