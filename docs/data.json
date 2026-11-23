@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-22T21:33:32+00:00",
+  "generated_at": "2026-11-23T14:54:50+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -85,7 +85,7 @@
           "team": "Kansas City",
           "acronym": "UMKC",
           "conf": "4-1",
-          "ovr": "11-3-3",
+          "ovr": "11-3-4",
           "cpts": "12"
         },
         {
@@ -93,7 +93,7 @@
           "team": "Omaha",
           "acronym": "OMA",
           "conf": "3-1-1",
-          "ovr": "12-4-3",
+          "ovr": "12-5-3",
           "cpts": "10"
         },
         {
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -215,7 +215,7 @@
           "ovr": "1-11"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -242,28 +242,28 @@
           "team": "St. Thomas",
           "acronym": "UST",
           "conf": "10-4",
-          "ovr": "12-11"
+          "ovr": "13-11"
         },
         {
           "rank": 4,
           "team": "Omaha",
           "acronym": "OMA",
           "conf": "7-7",
-          "ovr": "13-11"
+          "ovr": "13-12"
         },
         {
           "rank": 5,
           "team": "North Dakota State",
           "acronym": "NDSU",
           "conf": "7-7",
-          "ovr": "15-9"
+          "ovr": "16-9"
         },
         {
           "rank": 6,
           "team": "Kansas City",
           "acronym": "UMKC",
           "conf": "6-8",
-          "ovr": "12-14"
+          "ovr": "12-15"
         },
         {
           "rank": 7,
@@ -280,7 +280,7 @@
           "ovr": "6-19"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -353,7 +353,7 @@
           "pts": "3"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
@@ -498,7 +498,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -607,7 +607,7 @@
           "ow_ol_sw": "0-0-0"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
@@ -797,7 +797,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -821,31 +821,31 @@
         },
         {
           "rank": 3,
-          "team": "Kansas City",
-          "acronym": "UMKC",
-          "conf": "0-0",
-          "ovr": "3-3"
-        },
-        {
-          "rank": 4,
           "team": "Omaha",
           "acronym": "OMA",
           "conf": "0-0",
           "ovr": "3-3"
         },
         {
+          "rank": 4,
+          "team": "South Dakota State",
+          "acronym": "SDSU",
+          "conf": "0-0",
+          "ovr": "3-3"
+        },
+        {
           "rank": 5,
-          "team": "Oral Roberts",
-          "acronym": "ORU",
+          "team": "Kansas City",
+          "acronym": "UMKC",
           "conf": "0-0",
           "ovr": "3-4"
         },
         {
           "rank": 6,
-          "team": "South Dakota State",
-          "acronym": "SDSU",
+          "team": "Oral Roberts",
+          "acronym": "ORU",
           "conf": "0-0",
-          "ovr": "2-3"
+          "ovr": "3-4"
         },
         {
           "rank": 7,
@@ -862,7 +862,7 @@
           "ovr": "1-4"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -927,7 +927,7 @@
           "ovr": "2-5"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     },
     "softball": {
       "status": "error",
@@ -983,7 +983,7 @@
           "ovr": "0-0"
         }
       ],
-      "updated_at": "2026-11-22T21:33:32+00:00"
+      "updated_at": "2026-11-23T14:54:50+00:00"
     }
   }
 }
