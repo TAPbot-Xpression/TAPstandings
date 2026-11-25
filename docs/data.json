@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-24T21:46:56+00:00",
+  "generated_at": "2026-11-25T14:54:33+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -215,7 +215,7 @@
           "ovr": "1-11"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -228,14 +228,14 @@
           "team": "South Dakota",
           "acronym": "USD",
           "conf": "13-1",
-          "ovr": "21-5"
+          "ovr": "21-6"
         },
         {
           "rank": 2,
           "team": "South Dakota State",
           "acronym": "SDSU",
           "conf": "11-3",
-          "ovr": "16-10"
+          "ovr": "17-10"
         },
         {
           "rank": 3,
@@ -280,7 +280,7 @@
           "ovr": "6-19"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -353,7 +353,7 @@
           "pts": "3"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
@@ -498,7 +498,7 @@
           "trend_dir": "same"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -607,7 +607,7 @@
           "ow_ol_sw": "0-0-0"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
@@ -797,7 +797,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -835,17 +835,17 @@
         },
         {
           "rank": 5,
-          "team": "Kansas City",
-          "acronym": "UMKC",
+          "team": "Oral Roberts",
+          "acronym": "ORU",
           "conf": "0-0",
           "ovr": "3-4"
         },
         {
           "rank": 6,
-          "team": "Oral Roberts",
-          "acronym": "ORU",
+          "team": "Kansas City",
+          "acronym": "UMKC",
           "conf": "0-0",
-          "ovr": "3-4"
+          "ovr": "3-5"
         },
         {
           "rank": 7,
@@ -862,7 +862,7 @@
           "ovr": "1-4"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -889,19 +889,19 @@
           "team": "North Dakota",
           "acronym": "UND",
           "conf": "0-0",
-          "ovr": "3-3"
+          "ovr": "4-3"
         },
         {
           "rank": 4,
-          "team": "Omaha",
-          "acronym": "OMA",
+          "team": "Oral Roberts",
+          "acronym": "ORU",
           "conf": "0-0",
-          "ovr": "3-3"
+          "ovr": "4-3"
         },
         {
           "rank": 5,
-          "team": "Oral Roberts",
-          "acronym": "ORU",
+          "team": "Omaha",
+          "acronym": "OMA",
           "conf": "0-0",
           "ovr": "3-3"
         },
@@ -910,7 +910,7 @@
           "team": "Kansas City",
           "acronym": "UMKC",
           "conf": "0-0",
-          "ovr": "3-4"
+          "ovr": "3-5"
         },
         {
           "rank": 7,
@@ -927,7 +927,7 @@
           "ovr": "3-5"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     },
     "softball": {
       "status": "error",
@@ -983,7 +983,7 @@
           "ovr": "0-0"
         }
       ],
-      "updated_at": "2026-11-24T21:46:56+00:00"
+      "updated_at": "2026-11-25T14:54:33+00:00"
     }
   }
 }
