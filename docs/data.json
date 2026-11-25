@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-25T17:38:17+00:00",
+  "generated_at": "2026-11-25T21:47:55+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -215,7 +215,7 @@
           "ovr": "1-11"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -280,7 +280,7 @@
           "ovr": "6-19"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -353,7 +353,7 @@
           "pts": "3"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
@@ -498,7 +498,7 @@
           "trend_dir": "same"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -607,7 +607,7 @@
           "ow_ol_sw": "0-0-0"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
@@ -797,7 +797,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -862,7 +862,7 @@
           "ovr": "1-4"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -875,7 +875,7 @@
           "team": "South Dakota State",
           "acronym": "SDSU",
           "conf": "0-0",
-          "ovr": "5-1"
+          "ovr": "5-2"
         },
         {
           "rank": 2,
@@ -907,27 +907,27 @@
         },
         {
           "rank": 6,
+          "team": "South Dakota",
+          "acronym": "USD",
+          "conf": "0-0",
+          "ovr": "4-5"
+        },
+        {
+          "rank": 7,
           "team": "Kansas City",
           "acronym": "UMKC",
           "conf": "0-0",
           "ovr": "3-5"
         },
         {
-          "rank": 7,
+          "rank": 8,
           "team": "North Dakota State",
           "acronym": "NDSU",
           "conf": "0-0",
           "ovr": "3-5"
-        },
-        {
-          "rank": 8,
-          "team": "South Dakota",
-          "acronym": "USD",
-          "conf": "0-0",
-          "ovr": "3-5"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     },
     "softball": {
       "status": "error",
@@ -983,7 +983,7 @@
           "ovr": "0-0"
         }
       ],
-      "updated_at": "2026-11-25T17:38:17+00:00"
+      "updated_at": "2026-11-25T21:47:55+00:00"
     }
   }
 }
