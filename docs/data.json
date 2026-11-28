@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-28T00:17:24+00:00",
+  "generated_at": "2026-11-28T03:02:33+00:00",
   "sports": {
     "wsoc": {
       "status": "ok",
@@ -72,7 +72,7 @@
           "cpts": "7"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "msoc": {
       "status": "ok",
@@ -129,7 +129,7 @@
           "cpts": "3"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "pfl": {
       "status": "ok",
@@ -215,7 +215,7 @@
           "ovr": "1-11"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "wvball": {
       "status": "ok",
@@ -280,7 +280,7 @@
           "ovr": "6-19"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "whockey": {
       "status": "ok",
@@ -333,7 +333,7 @@
           "team": "St. Thomas",
           "acronym": "STTHMN",
           "conf": "2-10-0",
-          "ovr": "4-10-0",
+          "ovr": "5-10-0",
           "pts": "7"
         },
         {
@@ -349,11 +349,11 @@
           "team": "Bemidji State",
           "acronym": "BEMIDJI",
           "conf": "1-11-0",
-          "ovr": "2-12-0",
+          "ovr": "3-12-0",
           "pts": "3"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "uscho_womens_poll": {
       "status": "ok",
@@ -498,7 +498,7 @@
           "trend_dir": "same"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "mhockey": {
       "status": "ok",
@@ -531,7 +531,7 @@
           "team": "Miami",
           "acronym": "MIA",
           "conf": "5-3-0",
-          "ovr": "10-4-0",
+          "ovr": "11-4-0",
           "gp": "8",
           "pts": "15",
           "ow_ol_sw": "0-0-0"
@@ -541,7 +541,7 @@
           "team": "Omaha",
           "acronym": "OMA",
           "conf": "4-3-1",
-          "ovr": "6-5-1",
+          "ovr": "7-5-1",
           "gp": "8",
           "pts": "14",
           "ow_ol_sw": "0-0-1"
@@ -551,7 +551,7 @@
           "team": "Denver",
           "acronym": "DU",
           "conf": "4-1-1",
-          "ovr": "9-3-2",
+          "ovr": "10-3-2",
           "gp": "6",
           "pts": "13",
           "ow_ol_sw": "1-1-0"
@@ -601,13 +601,13 @@
           "team": "St. Cloud State",
           "acronym": "SCSU",
           "conf": "1-6-1",
-          "ovr": "3-9-1",
+          "ovr": "3-10-1",
           "gp": "8",
           "pts": "4",
           "ow_ol_sw": "0-0-0"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "uscho_mens_poll": {
       "status": "ok",
@@ -797,7 +797,7 @@
           "trend_dir": "new"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "wbball": {
       "status": "ok",
@@ -817,14 +817,14 @@
           "team": "St. Thomas",
           "acronym": "UST",
           "conf": "0-0",
-          "ovr": "4-2"
+          "ovr": "5-2"
         },
         {
           "rank": 3,
           "team": "Omaha",
           "acronym": "OMA",
           "conf": "0-0",
-          "ovr": "3-3"
+          "ovr": "4-3"
         },
         {
           "rank": 4,
@@ -842,17 +842,17 @@
         },
         {
           "rank": 6,
-          "team": "Oral Roberts",
-          "acronym": "ORU",
-          "conf": "0-0",
-          "ovr": "3-6"
-        },
-        {
-          "rank": 7,
           "team": "North Dakota",
           "acronym": "UND",
           "conf": "0-0",
           "ovr": "2-4"
+        },
+        {
+          "rank": 7,
+          "team": "Oral Roberts",
+          "acronym": "ORU",
+          "conf": "0-0",
+          "ovr": "3-6"
         },
         {
           "rank": 8,
@@ -862,7 +862,7 @@
           "ovr": "2-5"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "mbball": {
       "status": "ok",
@@ -893,15 +893,15 @@
         },
         {
           "rank": 4,
-          "team": "St. Thomas",
-          "acronym": "UST",
+          "team": "South Dakota",
+          "acronym": "USD",
           "conf": "0-0",
           "ovr": "5-5"
         },
         {
           "rank": 5,
-          "team": "South Dakota",
-          "acronym": "USD",
+          "team": "St. Thomas",
+          "acronym": "UST",
           "conf": "0-0",
           "ovr": "5-5"
         },
@@ -927,7 +927,7 @@
           "ovr": "3-5"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     },
     "softball": {
       "status": "error",
@@ -983,7 +983,7 @@
           "ovr": "0-0"
         }
       ],
-      "updated_at": "2026-11-28T00:17:24+00:00"
+      "updated_at": "2026-11-28T03:02:33+00:00"
     }
   }
 }
